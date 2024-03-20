@@ -5,36 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2D Primitive Elements</title>
   <link rel="stylesheet" href="styles.css">
-  <script  id="vertex-shader-2d" type="notjs">
-
-    // an attribute will receive data from a buffer
-    attribute vec4 a_position;
-  
-    // all shaders have a main function
-    void main() {
-  
-      // gl_Position is a special variable a vertex shader
-      // is responsible for setting
-      gl_Position = a_position;
-    }
-  
-  </script>
-  <script  id="fragment-shader-2d" type="notjs">
-
-    // fragment shaders don't have a default precision so we need
-    // to pick one. mediump is a good default
-    precision mediump float;
-  
-    void main() {
-      // gl_FragColor is a special variable a fragment shader
-      // is responsible for setting
-      gl_FragColor = vec4(1, 0, 0.5, 1); // return redish-purple
-    }
-  
-  </script>
-  <script src="index.js" type="module"></script>
 </head>
-<body>
+<body onload="main()";>
   <div class='root'>
     <div class='header'>
       <h1>2D Primitive Elements</h1>
@@ -51,12 +23,14 @@
         <button class="button" id="button-save">Save</button>
         <button class="button" id="button-load">Load</button>
       </div>
-      <canvas class="canvas"></canvas>
+      <canvas width="900" height="600" id="c"></canvas>
       <div class='right-panel'>
         <h2>List of Objects:</h2>
         <select class="select" id="object-list"></select>
       </div>
     </div>
   </div>
+  <script src="./lib/gl-utils.js"></script>
+  <script src="./lib/main.js"></script>
 </body>
 </html>
