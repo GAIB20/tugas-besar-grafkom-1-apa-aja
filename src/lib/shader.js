@@ -1,8 +1,4 @@
-function createShader(
-    gl : WebGLRenderingContext,
-    type : number,
-    source : string
-) {
+function createShader(gl, type, source) {
     const shader = gl.createShader(type);
     if (!shader) {
         console.error('Failed to create shader');

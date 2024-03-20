@@ -1,8 +1,4 @@
-function createProgram(
-    gl: WebGLRenderingContext,
-    vertexShader: WebGLShader,
-    fragmentShader: WebGLShader
-) {
+function createProgram(gl, vertexShader, fragmentShader) {
     const program = gl.createProgram();
     if (!program) {
         console.error('Failed to create program');
@@ -16,8 +12,8 @@ function createProgram(
         return program;
     } else {
         console.error('Failed to compile program: ', gl.getProgramInfoLog(program));
-        gl.deleteProgram(program)
-        return null
+        gl.deleteProgram(program);
+        return null;
     }
 }
 
