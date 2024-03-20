@@ -32,6 +32,7 @@
     }
   
   </script>
+  <script src="index.js" type="module"></script>
 </head>
 <body>
   <div class='root'>
@@ -41,14 +42,14 @@
     <div class='root-panel'>
       <div class='left-panel'>
         <h2>Shapes:</h2>
-        <button class="button_line">Line</button>
-        <button class="button_square">Square</button>
-        <button class="button_rectangle">Rectangle</button>
-        <button class="button_polygon">Polygon</button>
+        <button class="button" id ="button-line">Line</button>
+        <button class="button" id ="button-square">Square</button>
+        <button class="button" id="button-rectangle">Rectangle</button>
+        <button class="button" id="button-polygon">Polygon</button>
         <h2>Tools:</h2>
-        <button class="button_clear">Clear Canvas</button>
-        <button class="button_save">Save</button>
-        <button class="button_load">Load</button>
+        <button class="button" id="button-clear">Clear Canvas</button>
+        <button class="button" id="button-save">Save</button>
+        <button class="button" id="button-load">Load</button>
       </div>
       <canvas class="canvas"></canvas>
       <div class='right-panel'>
@@ -57,6 +58,5 @@
       </div>
     </div>
   </div>
-  <script src="index.js"></script>
 </body>
 </html>
