@@ -1,33 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Button } from "@/components/ui/button"
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='w-full h-full relative flex flex-col overflow-hidden' id='root'>
+        <div className='h-[40px] flex justify-center items-center bg-black text-white' id='header'>
+          <h1>2D Primitive Elements</h1>
+        </div>
+        <div className='h-screen flex flex-row' id='root-panel'>
+
+          <div className='flex flex-col w-[30%] justify-center items-center gap-8 bg-amber-200' id='left-panel'>
+
+            <h2 className="font-bold text-[28px]">Shapes:</h2>
+            <Button>Line</Button>
+            <Button>Square</Button>
+            <Button>Rectangle</Button>
+            <Button>Polygon</Button>
+
+            <h2 className="font-bold text-[28px]">Tools:</h2>
+            <Button>Clear Canvas</Button>
+            <Button>Save</Button>
+            <Button>Load</Button>
+          </div>
+
+          <canvas id='canvas'></canvas>
+
+          <div className='flex flex-col w-[30%]  bg-amber-200 pt-[20px] px-[20px]' id='right-panel'>
+            <h2>List of Objects:</h2>
+            <select className="h-[35px] bg-white mt-[10px]"></select>
+          </div>
+
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
