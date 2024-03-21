@@ -18,12 +18,20 @@
         <button class="button" id ="button-square">Square</button>
         <button class="button" id="button-rectangle">Rectangle</button>
         <button class="button" id="button-polygon">Polygon</button>
+
+        <div class="color-option-container">
+          <h2>Color:</h2>
+          <input type="color" class="color-option" id="color-option" value="000000"/>
+        </div>
+
         <h2>Tools:</h2>
         <button class="button" id="button-clear">Clear Canvas</button>
         <button class="button" id="button-save">Save</button>
         <button class="button" id="button-load">Load</button>
       </div>
-      <canvas width="900" height="600" id="c"></canvas>
+      <div className="ini-container-canvas">
+        <canvas width="900" height="600" id="ini-canvas"></canvas>
+      </div>
       <div class='right-panel'>
         <h2>List of Objects:</h2>
         <select class="select" id="object-list"></select>

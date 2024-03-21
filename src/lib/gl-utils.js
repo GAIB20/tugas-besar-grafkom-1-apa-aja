@@ -97,16 +97,16 @@ function setPositionAttribute(gl, program, arr = [], attributeName, numComponent
     gl.enableVertexAttribArray(location);
 }
 
-function setPositionAttributeColor(gl, program, arr = [], numComponents = 4) {
-	setPositionAttribute(gl, program, arr, "vertColor", numComponents);
+function setPositionAttributeColor(gl, program, arrColors = [], numComponents = 4) {
+	setPositionAttribute(gl, program, arrColors, "vertColor", numComponents);
 }
 
-function setPositionAttributeVertex(gl, program, arr = []) {
-	setPositionAttribute(gl, program, arr, "a_position");
+function setPositionAttributeVertex(gl, program, arrVertices = []) {
+	setPositionAttribute(gl, program, arrVertices, "a_position");
 }
 
 function startGL(){
-    const canvas = document.querySelector("#c");
+    const canvas = document.querySelector("#ini-canvas");
 
 	const gl = canvas.getContext("webgl");
 
@@ -128,34 +128,34 @@ function startGL(){
 	const program = initShaderProgram(gl, vsSource, fsSource);
 	gl.useProgram(program);
 
-	// testing make a triangle
-	//// Define vertex data for the triangle
-    const vertices = [
-        0.0,  0.5, // Vertex 1 (x, y)
-       -0.5, -0.5, // Vertex 2 (x, y)
-        0.5, -0.5  // Vertex 3 (x, y)
-    ];
+	// // testing make a triangle
+	// // Define vertex data for the triangle
+    // const vertices = [
+    //     0.0,  0.5, // Vertex 1 (x, y)
+    //    -0.5, -0.5, // Vertex 2 (x, y)
+    //     0.5, -0.5  // Vertex 3 (x, y)
+    // ];
 
-    // Define color data for the triangle
-    const colors = [
-        1.0, 0.0, 0.0, 1.0, // Red (Vertex 1)
-        0.0, 1.0, 0.0, 1.0, // Green (Vertex 2)
-        0.0, 0.0, 1.0, 1.0  // Blue (Vertex 3)
-    ];
+    // // Define color data for the triangle
+    // const colors = [
+    //     1.0, 0.0, 0.0, 1.0, // Red (Vertex 1)
+    //     0.0, 1.0, 0.0, 1.0, // Green (Vertex 2)
+    //     0.0, 0.0, 1.0, 1.0  // Blue (Vertex 3)
+    // ];
 
-	setPositionAttributeVertex(gl, program,vertices);
-	setPositionAttributeColor(gl,program,colors,4);
+	// setPositionAttributeVertex(gl, program,vertices);
+	// setPositionAttributeColor(gl,program,colors,4);
 
-	gl.drawArrays(gl.TRIANGLES, 0, 3);
+	// gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-	// // testing
-	// // Define buffer
-	// const positionBuffer = gl.createBuffer();
-    // gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+	// testing
+	// Define buffer
+	const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-	// // Define vertex shader attribute
-	// setPositionAttributeVertex(gl, program, []);
-	// setPositionAttributeColor(gl, program, [], 4);
+	// Define vertex shader attribute
+	setPositionAttributeVertex(gl, program, []);
+	setPositionAttributeColor(gl, program, [], 4);
 
 	return gl
   
