@@ -27,6 +27,7 @@ html, body {
   padding: 1.5rem;
   gap: 8px;
   background-color: #3d4457;
+  z-index: 9999;
 }
 
 .left-panel h1 {
@@ -143,4 +144,25 @@ html, body {
 
 .slider input {
   width: 65%;
+}
+
+.github-float {
+  position: fixed;
+  background-color: #212733;
+  padding: 0.6rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.github-float:hover {
+  background-color: black;
+}
+
+.github-icon {
+  width: 2rem;
+  height: auto;
 }
