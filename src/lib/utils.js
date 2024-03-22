@@ -1,5 +1,10 @@
 const addedListeners = {};
 
+// Make the load button more clickable
+document.getElementById('file-button').addEventListener('click', function() {
+    document.getElementById('button-load').click();
+});
+
 // Get the current mouse coordinates
 function getMouseCoordinate(canvas, event) {
     const rect = canvas.getBoundingClientRect();
@@ -92,4 +97,14 @@ function exportModel(type, vertex) {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+}
+
+// Parse json file to load model
+function parseJsonFile(file) {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader()
+        fileReader.onload = event => resolve(JSON.parse(event.target.result))
+        fileReader.onerror = error => reject(error)
+        fileReader.readAsText(file)
+    })
 }
