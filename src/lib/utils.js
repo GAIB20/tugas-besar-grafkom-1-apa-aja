@@ -68,3 +68,28 @@ function addRangeListener(id, shape) {
         shape.transformDrawShape();
     }, false);
 }
+
+// Create a new node by replacing the old one
+function cloneAndReplace(id) {
+    const oldNode = document.getElementById(id);  
+    const newNode = oldNode.cloneNode(true);
+    oldNode.parentNode.replaceChild(newNode, oldNode);
+
+    return newNode
+}
+
+// Export model to be saved
+function exportModel(type, vertex) {
+    const element = document.createElement('a');
+    const config = {
+        "type": type,
+        "vertex": vertex,
+    }
+
+    element.setAttribute('href', 'data:text/json, ' + encodeURIComponent(JSON.stringify(config)));
+    element.setAttribute('download', 'config.json');
+
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}

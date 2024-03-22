@@ -2,6 +2,7 @@ class Line extends Shape {
 
     constructor(gl){
         super(gl, gl.LINES);
+        this.shape = "line";
     }
 
     addCanvasListener(){

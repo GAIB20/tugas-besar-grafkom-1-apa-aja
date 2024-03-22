@@ -3,6 +3,7 @@ class Shape {
     constructor(gl, type) {
         this.gl = gl;
         this.type = type;
+        this.shape = "";
         this.reset();
     }
 
@@ -31,6 +32,7 @@ class Shape {
         this.addColorButtonListener();
         this.addClearButtonListener();
         this.addParamsListener();
+        this.addSaveListener();
     }
 
     // Reset the canvas
@@ -98,6 +100,16 @@ class Shape {
         addRangeListener("scale", this);
         addRangeListener("transformX", this);
         addRangeListener("transformY", this);
+    }
+
+    // Listener for save button
+    addSaveListener() {
+        cloneAndReplace("button-save");
+
+        const saveModelButton = document.getElementById('button-save');        
+        saveModelButton.addEventListener('click', () => {
+            exportModel(this.shape, this.arrVertices);
+        });
     }
 
     // Draw the shape functionalities

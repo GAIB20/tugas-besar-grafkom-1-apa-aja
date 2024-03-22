@@ -2,6 +2,7 @@ class Polygon extends Shape {
     // Polygon constructor
     constructor(gl) {
         super(gl, gl.TRIANGLE_FAN);
+        this.shape = "polygon";
     }
     
     // Canvas listener for drag and drop purposes

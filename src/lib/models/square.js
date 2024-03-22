@@ -1,6 +1,7 @@
 class Square extends Shape {
     constructor(gl){
         super(gl, gl.TRIANGLE_FAN);
+        this.shape = "square";
     }
 
     addCanvasListener(){
