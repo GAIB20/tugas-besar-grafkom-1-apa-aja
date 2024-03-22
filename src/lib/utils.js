@@ -1,3 +1,5 @@
+const addedListeners = {};
+
 function getMouseCoordinate(canvas, event) {
     const rect = canvas.getBoundingClientRect();
     return {
@@ -7,11 +9,14 @@ function getMouseCoordinate(canvas, event) {
 }
 
 function addButtonListener(id, shape) {
-    const button = document.getElementById(id);
-    button.addEventListener("click", () => {      
-        
-        changeShape(id, shape);
-    }, false);
+    if (!addedListeners[id]) { // Check if event listener for this id has been added
+        const button = document.getElementById(id);
+        button.addEventListener("click", () => {      
+            changeShape(id, shape);
+        }, false);
+
+        addedListeners[id] = true; // Mark the listener as added
+    }
 }
 
 function changeShape(id, shape) {
