@@ -62,7 +62,7 @@ class Shape {
         arrVertices = this.transformShape(arrVertices);
         this.drawShape(arrVertices);
 
-        if (isDone){
+        if(isDone){
 
             this.addVerticesListener(arrVertices);
 
@@ -87,16 +87,22 @@ class Shape {
 
         arrVertices = coordinateToPixel(arrVertices);
         let arrLength = arrVertices.length;
-        const containerCanvas = document.querySelector("#ini-container-canvas");
-        const canvas = document.querySelector("#ini-canvas");
+        const containerCanvas = document.querySelector(".ini-container-canvas");
+        const canvas = document.getElementById("ini-canvas");
+        const leftPanel = document.querySelector(".left-panel");
+        const header = document.querySelector(".header");
+
+        const headerHeight = header.offsetHeight;
+        const leftPanelWidth = leftPanel.offsetWidth;
+
         for (let i = 0; i < arrLength; i+=6){
             let vertex = document.createElement("div");
             vertex.setAttribute("id", `vertex-${i/6}`);
             vertex.classList.add("vertex");
             vertex.style.cssText = `
                 position: absolute;
-                top: ${arrVertices[i+1]}px;
-                left: ${arrVertices[i]}px;
+                top: ${arrVertices[i+1] + headerHeight - 4}px;
+                left: ${arrVertices[i] + leftPanelWidth - 4}px;
             `
             
             vertex.addEventListener("drag", (event) => {
@@ -130,8 +136,8 @@ class Shape {
                 colorOption.value = document.getElementById("color-option").value;
                 colorOption.style.cssText = `
                     position: absolute;
-                    top: ${arrVertices[i+1] - 25}px;
-                    left: ${arrVertices[i] - 25}px;
+                    top: ${arrVertices[i+1]  + headerHeight - 20}px;
+                    left: ${arrVertices[i]  + leftPanelWidth + 20}px;
                 `
 
                 colorOption.addEventListener("input", (event) =>{
