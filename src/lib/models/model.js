@@ -120,7 +120,7 @@ class Shape {
         arrVertices = coordinateToPixel(arrVertices);
         let arrLength = arrVertices.length;
         const containerCanvas = document.querySelector(".ini-container-canvas");
-        const headerHeight = document.querySelector(".header").offsetHeight;
+        const headerHeight = 0;
         const leftPanelWidth = document.querySelector(".left-panel").offsetWidth;
 
         for (let i = 0; i < arrLength; i += 6) {
