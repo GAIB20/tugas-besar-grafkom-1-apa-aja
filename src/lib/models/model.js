@@ -163,6 +163,12 @@ class Shape {
     addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, leftPanelWidth){
         let i = index * 6;
 
+        // Event listener untuk memulai drag ketika titik vertex diklik
+        vertexElement.addEventListener("mousedown", () => {
+            
+            vertexElement.setAttribute("draggable", "true");
+        });
+
         vertexElement.addEventListener("drag", (event) => {
             const coordinate = getMouseCoordinate(canvas,event);
 
