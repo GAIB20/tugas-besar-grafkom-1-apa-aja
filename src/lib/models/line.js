@@ -35,7 +35,7 @@ class Line extends Shape {
 
             if (!this.isDrawn) {
                 const coordinate = getMouseCoordinate(canvas, event);
-                this.createLine(initCoor, coordinate, false);
+                this.createLine(initCoor, coordinate, true);
                 this.isDrawn = true;
             }
 

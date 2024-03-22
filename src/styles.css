@@ -83,4 +83,14 @@ html, body {
     width: 70%;
     background-color: #fff;
   }
+
+  .vertex {
+    width: 9px;
+    height: 9px;
+    background-color: blue;
+    border-radius: 100%;
+  }
   
+  .vertex:hover {
+    cursor: pointer;
+  }
