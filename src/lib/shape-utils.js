@@ -2,27 +2,6 @@ const canvas = document.querySelector("#ini-canvas");
 const CANVAS_WIDTH = canvas.getAttribute("width");
 const CANVAS_HEIGHT = canvas.getAttribute("height");
 
-// Function to reset all the parameter of user input to the canvas
-function resetParams() {
-    // Get the x value and then reset the min and max value to the canvas size
-    const xValue = document.getElementById("x");
-    xValue.setAttribute("min", 0);
-    xValue.setAttribute("max", CANVAS_WIDTH);
-    xValue.value = CANVAS_WIDTH / 2;
-    
-    // Get the y value and then reset the min and max value to the canvas size
-    const yValue = document.getElementById("y");
-    yValue.setAttribute("min", 0);
-    yValue.setAttribute("max", CANVAS_HEIGHT);
-    yValue.value = CANVAS_HEIGHT / 2;
-
-    // Reset the other parameters to default values
-    document.getElementById("angle").value = 0;
-    document.getElementById("scale").value = 1;
-    document.getElementById("transformX").value = 1;
-    document.getElementById("transformY").value = 1;
-}
-
 // Translate x pixel to coordinate between [-1, 1]
 function translateXPixel(x) {
     let half = CANVAS_WIDTH / 2;
@@ -104,6 +83,34 @@ function scale(vertices, factor) {
     return vertices;    
 }
 
+// Doing shape rotation
+function rotate(vertices, angle) {
+    center = getCenter(vertices);
+    angle = angle * Math.PI / 180;
+
+    for (let i = 0; i < vertices.length; i += 6) {
+        x = vertices[i] - center[0];
+        y = vertices[i + 1] - center[1];
+
+        // Doing rotation using polar concepts
+        vertices[i] = x*Math.cos(angle) - y*Math.sin(angle) + center[0];
+        vertices[i + 1] = x*Math.sin(angle) + y*Math.cos(angle) + center[1];
+    }
+
+    return vertices;
+}
+
+// Doing shape shear
+function shear(vertices, shearX, shearY) {
+    center = getCenter(vertices);
+    for (let i = 0; i < vertices.length; i += 6) {
+        vertices[i] = (vertices[i] - center[0]) * shearX + center[0];
+        vertices[i + 1] = (vertices[i + 1] - center[1]) * shearY + center[1];
+    }
+
+    return vertices;
+}
+
 // Change the x value of every points on that shape
 function transformX(vertices, value) {
     center = getCenter(vertices);
@@ -114,7 +121,7 @@ function transformX(vertices, value) {
     return vertices;
 }
 
-// Ini fungsi buat ubah nilai y tiap titik shapenya
+// Change the y value of every points on that shape
 function transformY(vertices, value) {
     center = getCenter(vertices);
     for (let i = 0; i < vertices.length; i += 6) {
@@ -131,7 +138,7 @@ function pointOrientation(vertex, p, q, r) {
               (vertex[q] - vertex[p]) * (vertex[r + 1] - vertex[q + 1])
     
     if (val == 0) return 0; // collinear
-    return (val > 0)? 1: 2; // clock or counterclock wise
+    return (val > 0)? 1 : 2; // clock or counterclock wise
 }
 
 // Function to do convex-hull
@@ -179,6 +186,7 @@ function convexHull (vertices) {
     return hull
 }
 
+// Doing HEX to RGB convertion
 function hexToRGB(color) {
     const parseComponent = (str) => parseInt(str, 16);
     
@@ -189,4 +197,23 @@ function hexToRGB(color) {
     return { r: r / 255, g: g / 255, b: b / 255 };
 }
 
+// Function to reset all the parameter of user input to the canvas
+function resetParams() {
+    // Get the x value and then reset the min and max value to the canvas size
+    const xValue = document.getElementById("x");
+    xValue.setAttribute("min", 0);
+    xValue.setAttribute("max", CANVAS_WIDTH);
+    xValue.value = CANVAS_WIDTH / 2;
+    
+    // Get the y value and then reset the min and max value to the canvas size
+    const yValue = document.getElementById("y");
+    yValue.setAttribute("min", 0);
+    yValue.setAttribute("max", CANVAS_HEIGHT);
+    yValue.value = CANVAS_HEIGHT / 2;
 
+    // Reset the other parameters to default values
+    document.getElementById("angle").value = 0;
+    document.getElementById("scale").value = 1;
+    document.getElementById("transformX").value = 1;
+    document.getElementById("transformY").value = 1;
+}
