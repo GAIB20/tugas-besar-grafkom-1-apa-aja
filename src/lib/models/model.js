@@ -126,6 +126,29 @@ class Shape {
                 this.transformDrawShape();
 
             }, false);
+
+            vertex.addEventListener("dblclick", () => {
+
+                let colorOption = document.querySelector(`#color-option-${i/6}`);
+
+                if (colorOption){
+                    colorOption.blur();
+                }
+
+                this.arrVertices.splice(i, 6);
+                let arrLength = this.arrVertices.length;
+                this.transformDrawShape();
+
+                if (arrLength == 12 && this.type == 6){
+                    this.resetVerticesListener();
+                    this.reset();
+                }
+                else if (arrLength == 6 && this.type == 1) {
+                    this.resetVerticesListener();
+                    this.reset();
+                }
+
+            }, false)
             
             vertex.addEventListener("click", () => {
 

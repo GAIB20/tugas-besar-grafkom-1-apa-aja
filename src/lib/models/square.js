@@ -34,7 +34,7 @@ class Square extends Shape {
 
             if (!this.isDrawn) {
                 const coordinate = getMouseCoordinate(canvas, event);
-                this.createSquare(initCoor, coordinate, false);
+                this.createSquare(initCoor, coordinate, true);
                 this.isDrawn = true;
             }
 

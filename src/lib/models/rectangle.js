@@ -35,7 +35,7 @@ class Rectangle extends Shape {
 
             if (!this.isDrawn) {
                 const coordinate = getMouseCoordinate(canvas, event);
-                this.createRectangle(initCoor, coordinate, false);
+                this.createRectangle(initCoor, coordinate, true);
                 this.isDrawn = true;
             }
 
