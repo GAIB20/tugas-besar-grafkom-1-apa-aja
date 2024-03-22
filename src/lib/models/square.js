@@ -45,13 +45,36 @@ class Square extends Shape {
     createSquare(initCoor, coor, isDone) {
         const { r, g, b } = this.colors;
 
+        const length = Math.abs(initCoor.x - coor.x);
+
+        let xCoor, yCoor;
+
+        if (coor.x < initCoor.x) {
+            if(coor.y < initCoor.y) {
+                xCoor = initCoor.x - length;
+                yCoor = initCoor.y - length;
+            }
+            else {
+                xCoor = initCoor.x - length;
+                yCoor = initCoor.y + length;
+            }
+        } 
+        else {
+            if(coor.y < initCoor.y) {
+                xCoor = initCoor.x + length;
+                yCoor = initCoor.y - length;
+            }
+            else {
+                xCoor = initCoor.x + length;
+                yCoor = initCoor.y + length;
+            }
+        }
+
         this.arrVertices = [
             initCoor.x, initCoor.y, r, g, b, 1.0,
-            coor.x, initCoor.y, r, g, b, 1.0,
-            coor.x, coor.y, r, g, b, 1.0,
-            coor.x, coor.y , r, g, b, 1.0,
-            initCoor.x, coor.y, r, g, b, 1.0,
-            initCoor.x, initCoor.y, r, g, b, 1.0
+            xCoor, initCoor.y, r, g, b, 1.0,
+            xCoor, yCoor, r, g, b, 1.0,
+            initCoor.x, yCoor , r, g, b, 1.0,
         ]
 
         console.log(coor.x, coor.y)
