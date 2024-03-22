@@ -1,70 +1,76 @@
 class Shape {
-
-    // constructor shape class
-    constructor(gl, type){
+    // Base class shape constructor
+    constructor(gl, type) {
         this.gl = gl;
         this.type = type;
         this.reset();
     }
 
-    // canvas init, must be implemented
-    addCanvasListener() {
-        throw new Error("Shape is an abstract class");
-    }
-
-    // reset / clear
-    reset(){
+    // Reset all the values
+    reset() {
         this.isDrawn = false;
         this.arrVertices = [];
+        // Get all the variables, some from DOM
         this.colors = hexToRGB(document.getElementById('color-option').value);
+        this.x = parseInt(document.getElementById("x").value),
+        this.y = parseInt(document.getElementById("y").value),
+        this.scale = parseInt(document.getElementById("scale").value),
+        this.angle = parseInt(document.getElementById("angle").value),
+        this.transformX = parseInt(document.getElementById("transformX").value),
+        this.transformY = parseInt(document.getElementById("transformY").value),
 
         this.transformDrawShape();
     }
 
-    // init for listeners
-    init(){
-
+    // Initiate all the listeners
+    init() {
         this.resetCanvasListener();
         this.addCanvasListener();
         this.addTypeListener();
         this.addColorButtonListener();
         this.addClearButtonListener();
-
+        this.addParamsListener();
     }
 
-    // shape button listeners
-    addTypeListener(){
+    // Reset the canvas
+    resetCanvasListener() {
+        this.resetVerticesListener();
+        changeCanvas("#ini-canvas"); // Change the canvas
+        this.gl = startGL();
+    }
 
+    // Clear all the vertex elements
+    resetVerticesListener() {
+        const vertices = document.querySelectorAll(".vertex");
+        vertices.forEach((vertex) => {
+            vertex.remove();
+        })
+    }
+
+    // Canvas init validation, must be implemented
+    addCanvasListener() {
+        throw new Error("Shape is an abstract class");
+    }
+
+    // Shape button listeners
+    addTypeListener() {
         addButtonListener("button-line", this);
         addButtonListener("button-square", this);
         addButtonListener("button-rectangle", this);
         addButtonListener("button-polygon", this);
-
     }
 
-    // reset canvas
-    resetCanvasListener(){
-
-        this.resetVerticesListener();
-
-        changeCanvas("#ini-canvas");
-
-        this.gl = startGL();
-    }
-
-    // color button listener
-    addColorButtonListener(){
-
+    // Color button listener based on option
+    addColorButtonListener() {
         const colorButton = document.getElementById("color-option");
         colorButton.addEventListener("input", (event) => {
             this.colors = hexToRGB(event.target.value);
             this.changeColor();
         }, false);
-
     }
 
-    // change color
-    changeColor(){
+    // Change all the color elements
+    changeColor() {
         let arrLength = arrVertices.length;
         for (let i = 0; i < arrLength; i+=6){
             this.arrVertices[i+2] = this.colors.r;
@@ -74,47 +80,57 @@ class Shape {
         }
     }
 
-    // clear button listener
-    addClearButtonListener(){
+    // Clear button listener
+    addClearButtonListener() {
         const clearButton = document.getElementById("button-clear");
         clearButton.addEventListener("click", () => {
             this.resetVerticesListener();
             this.reset();
         })
-
     }
 
-    // main function for transform and draw shape
-    transformDrawShape(isDone = true){
+    // Listener for parameter adjusted by user
+    addParamsListener() {
+        addRangeListener("x", this);
+        addRangeListener("y", this);
+        addRangeListener("angle", this);
+        addRangeListener("scale", this);
+        addRangeListener("transformX", this);
+        addRangeListener("transformY", this);
+    }
 
+    // Draw the shape functionalities
+    // Main function for transform and draw shape
+    transformDrawShape(isDone = true) {
         let arrVertices = this.arrVertices.slice();
         arrVertices = this.transformShape(arrVertices);
         this.drawShape(arrVertices);
 
-        if(isDone){
-
+        if(isDone) {
             this.addVerticesListener(arrVertices);
-
         }
-
     }
 
-    // draw shape 
-    drawShape(arrVertices){
+    // Draw the shape
+    drawShape(arrVertices) {
         let arrLength = arrVertices.length;
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(arrVertices), this.gl.STATIC_DRAW);
         this.gl.drawArrays(this.type, 0, arrLength / 6);
     }
 
-    // transform shape
+    // Transform the shape
     transformShape(arrVertices) {
-        // not yet implemented
+        /* arrVertices = translation(arrVertices, this.x, this.y);
+        arrVertices = scale(arrVertices, this.scale);    
+        arrVertices = rotate(arrVertices, this.angle);
+        arrVertices = transformX(arrVertices, this.transformX);
+        arrVertices = transformY(arrVertices, this.transformY); */
+
         return arrVertices;
     }
 
-    // add vertex elements on the html, so that the vertices can be clicked and dragged
+    // Add vertex elements on the html, so that the vertices can be clicked and dragged
     addVerticesListener(arrVertices) {
-
         this.resetVerticesListener();
 
         arrVertices = coordinateToPixel(arrVertices);
@@ -127,10 +143,9 @@ class Shape {
             const vertexElement = this.createVertexElement(arrVertices, vertex, i / 6, containerCanvas, leftPanelWidth);
             containerCanvas.appendChild(vertexElement);
         }
-        
     }
 
-    // create each vertex element
+    // Create each vertex element
     createVertexElement(arrVertices, vertex, index, containerCanvas, leftPanelWidth) {
         const vertexElement = document.createElement("div");
         vertexElement.setAttribute("id", `vertex-${index / 6}`);
@@ -144,13 +159,11 @@ class Shape {
         return vertexElement;
     }
 
-    // vertex can be dragged for the drawing, clicked for change color of each vertex, and double clicked for delete each vertex
+    // Vertex can be dragged for the drawing, clicked for change color of each vertex, and double clicked for delete each vertex
     addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, leftPanelWidth){
-
         let i = index * 6;
 
         vertexElement.addEventListener("drag", (event) => {
-
             const coordinate = getMouseCoordinate(canvas,event);
 
             if (coordinate.x > 0 && coordinate.y > 0){
@@ -158,24 +171,20 @@ class Shape {
                 this.arrVertices[i+1] = translateYPixel(coordinate.y);
                 this.transformDrawShape();
             }
-
         }, false);
 
         vertexElement.addEventListener("dragend", (event) => {
-
             const coordinate = getMouseCoordinate(canvas,event);
 
             this.arrVertices[i] = translateXPixel(coordinate.x - leftPanelWidth);
             this.arrVertices[i+1] = translateYPixel(coordinate.y);
             this.transformDrawShape();
-
         }, false);
 
         vertexElement.addEventListener("dblclick", () => {
-
             let colorOption = document.querySelector(`#color-option-${i/6}`);
 
-            if (colorOption){
+            if (colorOption) {
                 colorOption.blur();
             }
 
@@ -183,7 +192,7 @@ class Shape {
             let arrLength = this.arrVertices.length;
             this.transformDrawShape();
 
-            // shape will be deleted if is not relevant anymore, for example: line will be deleted if the vertices < 2, square & rectangle & polygon will be deleted if the vertices < 3
+            // Shape will be deleted if is not relevant anymore, for example: line will be deleted if the vertices < 2, square & rectangle & polygon will be deleted if the vertices < 3
             if (arrLength == 12 && this.type == 6){
                 this.resetVerticesListener();
                 this.reset();
@@ -192,11 +201,9 @@ class Shape {
                 this.resetVerticesListener();
                 this.reset();
             }
-
         }, false)
         
         vertexElement.addEventListener("click", () => {
-
             let colorOption = document.createElement("input");
             colorOption.setAttribute("id", `color-option-${i/6}`);
             colorOption.setAttribute("type", "color");
@@ -209,7 +216,6 @@ class Shape {
             `
 
             colorOption.addEventListener("input", (event) =>{
-
                 let { r, g, b} = hexToRGB(event.target.value);
 
                 this.arrVertices[i+2] = r;
@@ -217,7 +223,6 @@ class Shape {
                 this.arrVertices[i+4] = b;
                 this.arrVertices[i+5] = 1;
                 this.transformDrawShape();
-
             }, false);
 
             colorOption.addEventListener("blur", () => {
@@ -226,17 +231,6 @@ class Shape {
 
             containerCanvas.appendChild(colorOption);
             colorOption.focus();
-
         });
-
     }
-
-    // clear all vertex elements
-    resetVerticesListener() {
-        const vertices = document.querySelectorAll(".vertex");
-        vertices.forEach((vertex) => {
-            vertex.remove();
-        })
-    }
-    
 }

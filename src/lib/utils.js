@@ -1,5 +1,6 @@
 const addedListeners = {};
 
+// Get the current mouse coordinates
 function getMouseCoordinate(canvas, event) {
     const rect = canvas.getBoundingClientRect();
     return {
@@ -8,6 +9,7 @@ function getMouseCoordinate(canvas, event) {
     };
 }
 
+// Add event listeners to the buttons
 function addButtonListener(id, shape) {
     if (!addedListeners[id]) { // Check if event listener for this id has been added
         const button = document.getElementById(id);
@@ -19,6 +21,7 @@ function addButtonListener(id, shape) {
     }
 }
 
+// Handle shape changing mechanism
 function changeShape(id, shape) {
     shape.reset();
         
@@ -45,10 +48,23 @@ function changeShape(id, shape) {
     return shape
 }
 
+// Change with new canvas
 function changeCanvas(id) {
     const oldCanvas = document.querySelector(id);  
     const newCanvas = oldCanvas.cloneNode(true);
     oldCanvas.parentNode.replaceChild(newCanvas, oldCanvas);
 
     return newCanvas
+}
+
+// Create range value listeners from slider values
+function addRangeListener(id, shape) {
+    const range = document.getElementById(id);
+    console.log(range.value);
+
+    range.addEventListener("input", () => {
+        console.log(shape[id]);
+        shape[id] = parseFloat(range.value);
+        shape.transformDrawShape();
+    }, false);
 }
