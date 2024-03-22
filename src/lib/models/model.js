@@ -23,7 +23,8 @@ class Shape {
         this.resetCanvasListener();
         this.addCanvasListener();
         this.addTypeListener();
-        this.addColorListener();
+        this.ColorButtonListener();
+        this.clearButtonListener();
 
     }
 
@@ -45,13 +46,32 @@ class Shape {
         this.gl = startGL();
     }
 
-    addColorListener(){
+    colorButtonListener(){
 
-        const colorOption = document.getElementById("color-option");
-        colorOption.addEventListener("input", (event) => {
+        const colorButton = document.getElementById("color-option");
+        colorButton.addEventListener("input", (event) => {
             this.colors = hexToRGB(event.target.value);
             this.changeColor();
         }, false);
+
+    }
+
+    changeColor(){
+        let arrLength = arrVertices.length;
+        for (let i = 0; i < arrLength; i+=6){
+            this.arrVertices[i+2] = this.colors.r;
+            this.arrVertices[i+3] = this.colors.g;
+            this.arrVertices[i+4] = this.colors.b;
+            this.arrVertices[i+5] = 1;
+        }
+    }
+
+    clearButtonListener(){
+        const clearButton = document.getElementById("button-clear");
+        clearButton.addEventListener("click", () => {
+            this.resetVerticesListener();
+            this.reset();
+        })
 
     }
 
@@ -172,6 +192,7 @@ class Shape {
                     this.arrVertices[i+4] = b;
                     this.arrVertices[i+5] = 1;
                     this.transformDrawShape();
+
                 }, false);
 
                 colorOption.addEventListener("blur", () => {
@@ -194,16 +215,6 @@ class Shape {
         vertices.forEach((vertex) => {
             vertex.remove();
         })
-    }
-
-    changeColor(){
-        let arrLength = arrVertices.length;
-        for (let i = 0; i < arrLength; i+=6){
-            this.arrVertices[i+2] = this.colors.r;
-            this.arrVertices[i+3] = this.colors.g;
-            this.arrVertices[i+4] = this.colors.b;
-            this.arrVertices[i+5] = 1;
-        }
     }
     
 }
