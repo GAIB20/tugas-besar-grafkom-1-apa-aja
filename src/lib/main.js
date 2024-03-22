@@ -1,5 +1,5 @@
 const main = () => {
     const gl = startGL();    
-    let shape = new Square(gl);
+    let shape = new Line(gl);
     shape.init();
 };
