@@ -31,7 +31,7 @@ function translateYCoordinate(y) {
 function coordinateToPixel(vertices) {
     for (let i = 0; i < vertices.length; i += 6) {
         vertices[i] = translateXCoordinate(vertices[i]);
-        vertices[i + 1] = translateXCoordinate(vertices[i + 1]);
+        vertices[i + 1] = translateYCoordinate(vertices[i + 1]);
     }
 
     return vertices;
@@ -41,7 +41,7 @@ function coordinateToPixel(vertices) {
 function pixelToCoordinate(vertices) {
     for (let i = 0; i < vertices.length; i+=6) {
         vertices[i] = translateXPixel(vertices[i]);
-        vertices[i+1] = translateXPixel(vertices[i+1]);
+        vertices[i+1] = translateYPixel(vertices[i+1]);
     }
 
     return vertices;
