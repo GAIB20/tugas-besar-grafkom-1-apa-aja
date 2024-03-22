@@ -8,6 +8,7 @@ class Shape {
 
     // Reset all the values
     reset() {
+        resetParams();
         this.isDrawn = false;
         this.arrVertices = [];
         // Get all the variables, some from DOM
@@ -73,10 +74,10 @@ class Shape {
     changeColor() {
         let arrLength = arrVertices.length;
         for (let i = 0; i < arrLength; i+=6){
-            this.arrVertices[i+2] = this.colors.r;
-            this.arrVertices[i+3] = this.colors.g;
-            this.arrVertices[i+4] = this.colors.b;
-            this.arrVertices[i+5] = 1;
+            this.arrVertices[i + 2] = this.colors.r;
+            this.arrVertices[i + 3] = this.colors.g;
+            this.arrVertices[i + 4] = this.colors.b;
+            this.arrVertices[i + 5] = 1;
         }
     }
 
@@ -120,11 +121,11 @@ class Shape {
 
     // Transform the shape
     transformShape(arrVertices) {
-        /* arrVertices = translation(arrVertices, this.x, this.y);
+        arrVertices = translation(arrVertices, this.x, this.y);
         arrVertices = scale(arrVertices, this.scale);    
         arrVertices = rotate(arrVertices, this.angle);
         arrVertices = transformX(arrVertices, this.transformX);
-        arrVertices = transformY(arrVertices, this.transformY); */
+        arrVertices = transformY(arrVertices, this.transformY);
 
         return arrVertices;
     }

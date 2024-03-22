@@ -65,8 +65,8 @@ function getCenter(vertices) {
 // Doing shape translation
 function translation(vertices, dx, dy) {
     for (let i = 0; i < vertices.length; i += 6) {
-        vertices[i] += translateXCoordinate(dx);
-        vertices[i + 1] += translateYCoordinate(dy);
+        vertices[i] += translateXPixel(dx);
+        vertices[i + 1] += translateYPixel(dy);
     }
 
     return vertices

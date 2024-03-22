@@ -24,13 +24,14 @@ html, body {
   width: 30%;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 1.5rem;
   gap: 8px;
   background-color: #3d4457;
 }
 
 .left-panel h1 {
   font-size: 2rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
   color: #fff;
 }
@@ -57,11 +58,11 @@ html, body {
 .section {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  padding-right: 1.5rem;
+  padding-right: 1rem;
 }
   
 .button {
-  padding: 0.9rem;
+  padding: 0.8rem;
   margin-bottom: 10px;
   background-color: #212733;
   color: #fff;
@@ -73,7 +74,7 @@ html, body {
 }
 
 .button-img {
-  padding: 0.9rem;
+  padding: 0.6rem;
   margin-right: 0.5rem;
   background-color: #212733;
   color: #fff;
@@ -97,8 +98,8 @@ html, body {
 }
 
 .color-option {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 2.8rem;
+  height: 2.8rem;
 }
 
 .select {
