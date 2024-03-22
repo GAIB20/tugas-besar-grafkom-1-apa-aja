@@ -3,7 +3,6 @@ class Rectangle extends Shape {
         super(gl, gl.TRIANGLE_FAN);
     }
 
-
     addCanvasListener(){
         
         let initCoor = (0.0, 0.0);

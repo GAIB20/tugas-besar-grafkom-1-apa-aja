@@ -23,8 +23,8 @@ class Shape {
         this.resetCanvasListener();
         this.addCanvasListener();
         this.addTypeListener();
-        this.ColorButtonListener();
-        this.clearButtonListener();
+        this.addColorButtonListener();
+        this.addClearButtonListener();
 
     }
 
@@ -46,7 +46,7 @@ class Shape {
         this.gl = startGL();
     }
 
-    colorButtonListener(){
+    addColorButtonListener(){
 
         const colorButton = document.getElementById("color-option");
         colorButton.addEventListener("input", (event) => {
@@ -66,7 +66,7 @@ class Shape {
         }
     }
 
-    clearButtonListener(){
+    addClearButtonListener(){
         const clearButton = document.getElementById("button-clear");
         clearButton.addEventListener("click", () => {
             this.resetVerticesListener();
@@ -74,7 +74,6 @@ class Shape {
         })
 
     }
-
 
     transformDrawShape(isDone = true){
 
@@ -108,106 +107,113 @@ class Shape {
         arrVertices = coordinateToPixel(arrVertices);
         let arrLength = arrVertices.length;
         const containerCanvas = document.querySelector(".ini-container-canvas");
-        const canvas = document.getElementById("ini-canvas");
-        const leftPanel = document.querySelector(".left-panel");
-        const header = document.querySelector(".header");
+        const headerHeight = document.querySelector(".header").offsetHeight;
+        const leftPanelWidth = document.querySelector(".left-panel").offsetWidth;
 
-        const headerHeight = header.offsetHeight;
-        const leftPanelWidth = leftPanel.offsetWidth;
+        for (let i = 0; i < arrLength; i += 6) {
+            const vertex = arrVertices.slice(i, i + 6);
+            const vertexElement = this.createVertexElement(arrVertices, vertex, i / 6, containerCanvas, headerHeight, leftPanelWidth);
+            containerCanvas.appendChild(vertexElement);
+        }
+        
+    }
 
-        for (let i = 0; i < arrLength; i+=6){
-            let vertex = document.createElement("div");
-            vertex.setAttribute("id", `vertex-${i/6}`);
-            vertex.classList.add("vertex");
-            vertex.style.cssText = `
-                position: absolute;
-                top: ${arrVertices[i+1] + headerHeight - 4}px;
-                left: ${arrVertices[i] + leftPanelWidth - 4}px;
-            `
-            
-            vertex.addEventListener("drag", (event) => {
+    createVertexElement(arrVertices, vertex, index, containerCanvas, headerHeight, leftPanelWidth) {
+        const vertexElement = document.createElement("div");
+        vertexElement.setAttribute("id", `vertex-${index / 6}`);
+        vertexElement.classList.add("vertex");
+        vertexElement.style.cssText = `
+            position: absolute;
+            top: ${vertex[1] + headerHeight - 4}px;
+            left: ${vertex[0] + leftPanelWidth - 4}px;
+        `;
+        this.addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, headerHeight, leftPanelWidth);
+        return vertexElement;
+    }
 
-                const coordinate = getMouseCoordinate(canvas,event);
+    addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, headerHeight, leftPanelWidth){
 
-                if (coordinate.x > 0 && coordinate.y > 0){
-                    this.arrVertices[i] = translateXPixel(coordinate.x);
-                    this.arrVertices[i+1] = translateYPixel(coordinate.y);
-                    this.transformDrawShape();
-                }
+        let i = index * 6;
 
-            }, false);
+        vertexElement.addEventListener("drag", (event) => {
 
-            vertex.addEventListener("dragend", (event) => {
+            const coordinate = getMouseCoordinate(canvas,event);
 
-                const coordinate = getMouseCoordinate(canvas,event);
-
+            if (coordinate.x > 0 && coordinate.y > 0){
                 this.arrVertices[i] = translateXPixel(coordinate.x);
                 this.arrVertices[i+1] = translateYPixel(coordinate.y);
                 this.transformDrawShape();
+            }
+
+        }, false);
+
+        vertexElement.addEventListener("dragend", (event) => {
+
+            const coordinate = getMouseCoordinate(canvas,event);
+
+            this.arrVertices[i] = translateXPixel(coordinate.x);
+            this.arrVertices[i+1] = translateYPixel(coordinate.y);
+            this.transformDrawShape();
+
+        }, false);
+
+        vertexElement.addEventListener("dblclick", () => {
+
+            let colorOption = document.querySelector(`#color-option-${i/6}`);
+
+            if (colorOption){
+                colorOption.blur();
+            }
+
+            this.arrVertices.splice(i, 6);
+            let arrLength = this.arrVertices.length;
+            this.transformDrawShape();
+
+            if (arrLength == 12 && this.type == 6){
+                this.resetVerticesListener();
+                this.reset();
+            }
+            else if (arrLength == 6 && this.type == 1) {
+                this.resetVerticesListener();
+                this.reset();
+            }
+
+        }, false)
+        
+        vertexElement.addEventListener("click", () => {
+
+            let colorOption = document.createElement("input");
+            colorOption.setAttribute("id", `color-option-${i/6}`);
+            colorOption.setAttribute("type", "color");
+            colorOption.classList.add("color-option");
+            colorOption.value = document.getElementById("color-option").value;
+            colorOption.style.cssText = `
+                position: absolute;
+                top: ${arrVertices[i+1]  + headerHeight - 20}px;
+                left: ${arrVertices[i]  + leftPanelWidth + 20}px;
+            `
+
+            colorOption.addEventListener("input", (event) =>{
+
+                let { r, g, b} = hexToRGB(event.target.value);
+
+                this.arrVertices[i+2] = r;
+                this.arrVertices[i+3] = g;
+                this.arrVertices[i+4] = b;
+                this.arrVertices[i+5] = 1;
+                this.transformDrawShape();
 
             }, false);
 
-            vertex.addEventListener("dblclick", () => {
+            colorOption.addEventListener("blur", () => {
+                colorOption.remove();
+            }, false);
 
-                let colorOption = document.querySelector(`#color-option-${i/6}`);
+            containerCanvas.appendChild(colorOption);
+            colorOption.focus();
 
-                if (colorOption){
-                    colorOption.blur();
-                }
+        });
 
-                this.arrVertices.splice(i, 6);
-                let arrLength = this.arrVertices.length;
-                this.transformDrawShape();
-
-                if (arrLength == 12 && this.type == 6){
-                    this.resetVerticesListener();
-                    this.reset();
-                }
-                else if (arrLength == 6 && this.type == 1) {
-                    this.resetVerticesListener();
-                    this.reset();
-                }
-
-            }, false)
-            
-            vertex.addEventListener("click", () => {
-
-                let colorOption = document.createElement("input");
-                colorOption.setAttribute("id", `color-option-${i/6}`);
-                colorOption.setAttribute("type", "color");
-                colorOption.classList.add("color-option");
-                colorOption.value = document.getElementById("color-option").value;
-                colorOption.style.cssText = `
-                    position: absolute;
-                    top: ${arrVertices[i+1]  + headerHeight - 20}px;
-                    left: ${arrVertices[i]  + leftPanelWidth + 20}px;
-                `
-
-                colorOption.addEventListener("input", (event) =>{
-
-                    let { r, g, b} = hexToRGB(event.target.value);
-
-                    this.arrVertices[i+2] = r;
-                    this.arrVertices[i+3] = g;
-                    this.arrVertices[i+4] = b;
-                    this.arrVertices[i+5] = 1;
-                    this.transformDrawShape();
-
-                }, false);
-
-                colorOption.addEventListener("blur", () => {
-                    colorOption.remove();
-                }, false);
-
-                containerCanvas.appendChild(colorOption);
-                colorOption.focus();
-
-            });
-
-            containerCanvas.appendChild(vertex);
-
-        }
-        
     }
 
     resetVerticesListener() {
