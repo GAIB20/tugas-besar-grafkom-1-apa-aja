@@ -75,16 +75,12 @@ function loadShader(gl, type, source) {
 	return shader;
 }
 
-function setPositionAttribute(gl, program, arr = [], attributeName, numComponents = 2, offset=0, type = gl.FLOAT, normalize = gl.FALSE, stride = 0) {
+function setPositionAttribute(gl, program, attributeName, numComponents = 2, offset=0, type = gl.FLOAT, normalize = gl.FALSE, stride = 6) {
 
 	const location = gl.getAttribLocation(program, attributeName)
 
-	const buffer = gl.createBuffer();
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(arr), gl.STATIC_DRAW);
-
-	gl.useProgram(program);
+	stride = stride * Float32Array.BYTES_PER_ELEMENT;
+  	offset = offset * Float32Array.BYTES_PER_ELEMENT;
 
     gl.vertexAttribPointer(
       location,
@@ -97,16 +93,16 @@ function setPositionAttribute(gl, program, arr = [], attributeName, numComponent
     gl.enableVertexAttribArray(location);
 }
 
-function setPositionAttributeColor(gl, program, arrColors = [], numComponents = 4) {
-	setPositionAttribute(gl, program, arrColors, "vertColor", numComponents);
+function setPositionAttributeColor(gl, program, numComponents = 4, offset = 2) {
+	setPositionAttribute(gl, program,"vertColor", numComponents, offset);
 }
 
-function setPositionAttributeVertex(gl, program, arrVertices = []) {
-	setPositionAttribute(gl, program, arrVertices, "a_position");
+function setPositionAttributeVertex(gl, program) {
+	setPositionAttribute(gl, program, "a_position");
 }
 
 function startGL(){
-    const canvas = document.querySelector("#ini-canvas");
+    const canvas = document.getElementById("ini-canvas")
 
 	const gl = canvas.getContext("webgl");
 
@@ -117,8 +113,7 @@ function startGL(){
 		return;
 	}
 
-	// Set clear color to light blue
-	gl.clearColor(0.4,0.5,0.7,0.5);
+	gl.clearColor(1.0,1.0,1.0,1.0);
 
 	// Clear the color buffer with specified clear color
 	gl.clear(gl.COLOR_BUFFER_BIT);
@@ -128,35 +123,13 @@ function startGL(){
 	const program = initShaderProgram(gl, vsSource, fsSource);
 	gl.useProgram(program);
 
-	// // testing make a triangle
-	// // Define vertex data for the triangle
-    // const vertices = [
-    //     0.0,  0.5, // Vertex 1 (x, y)
-    //    -0.5, -0.5, // Vertex 2 (x, y)
-    //     0.5, -0.5  // Vertex 3 (x, y)
-    // ];
-
-    // // Define color data for the triangle
-    // const colors = [
-    //     1.0, 0.0, 0.0, 1.0, // Red (Vertex 1)
-    //     0.0, 1.0, 0.0, 1.0, // Green (Vertex 2)
-    //     0.0, 0.0, 1.0, 1.0  // Blue (Vertex 3)
-    // ];
-
-	// setPositionAttributeVertex(gl, program,vertices);
-	// setPositionAttributeColor(gl,program,colors,4);
-
-	// gl.drawArrays(gl.TRIANGLES, 0, 3);
-
-	// testing
 	// Define buffer
 	const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
 	// Define vertex shader attribute
-	setPositionAttributeVertex(gl, program, []);
-	setPositionAttributeColor(gl, program, [], 4);
+	setPositionAttributeVertex(gl, program);
+	setPositionAttributeColor(gl, program, 4, 2);
 
 	return gl
-  
 }

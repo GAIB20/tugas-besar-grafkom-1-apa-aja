@@ -21,7 +21,7 @@
 
         <div class="color-option-container">
           <h2>Color:</h2>
-          <input type="color" class="color-option" id="color-option" value="000000"/>
+          <input type="color" class="color-option" id="color-option" value="#000000"/>
         </div>
 
         <h2>Tools:</h2>
@@ -30,7 +30,7 @@
         <button class="button" id="button-load">Load</button>
       </div>
       <div className="ini-container-canvas">
-        <canvas width="900" height="600" id="ini-canvas"></canvas>
+        <canvas width="900" height="700" id="ini-canvas"></canvas>
       </div>
       <div class='right-panel'>
         <h2>List of Objects:</h2>
@@ -38,7 +38,11 @@
       </div>
     </div>
   </div>
-  <script src="./lib/gl-utils.js"></script>
   <script src="./lib/main.js"></script>
+  <script src="./lib/gl-utils.js"></script>
+  <script src="./lib/shape-utils.js"></script>
+  <script src="./lib/utils.js"></script>
+  <script src="./lib/models/model.js"></script>
+  <script src="./lib/models/line.js"></script>
 </body>
 </html>

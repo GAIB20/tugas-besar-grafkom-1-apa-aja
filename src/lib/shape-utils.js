@@ -82,24 +82,34 @@ function scale(vertices, factor) {
     return vertices;    
 }
 
-// Ini fungsi buat ubah nilai x tiap titik shapenya
-function transformX(vertices, value) {
-    center = getCenter(vertices);
-    for (let i = 0; i < vertices.length; i+=6) {
-        vertices[i] = (vertices[i] - center[0]) * value + center[0];
-    }
+// // Ini fungsi buat ubah nilai x tiap titik shapenya
+// function transformX(vertices, value) {
+//     center = getCenter(vertices);
+//     for (let i = 0; i < vertices.length; i+=6) {
+//         vertices[i] = (vertices[i] - center[0]) * value + center[0];
+//     }
     
-    return vertices;
-}
+//     return vertices;
+// }
 
-// Ini fungsi buat ubah nilai y tiap titik shapenya
-function transformY(vertices, value) {
-    center = getCenter(vertices);
-    for (let i = 0; i < vertices.length; i+=6) {
-        vertices[i + 1] = (vertices[i + 1] - center[1]) * value + center[1];
-    }
+// // Ini fungsi buat ubah nilai y tiap titik shapenya
+// function transformY(vertices, value) {
+//     center = getCenter(vertices);
+//     for (let i = 0; i < vertices.length; i+=6) {
+//         vertices[i + 1] = (vertices[i + 1] - center[1]) * value + center[1];
+//     }
 
-    return vertices;
+//     return vertices;
+// }
+
+function hexToRGB(color) {
+    const parseComponent = (str) => parseInt(str, 16);
+    
+    const r = parseComponent(color.substr(1, 2));
+    const g = parseComponent(color.substr(3, 2));
+    const b = parseComponent(color.substr(5, 2));
+    
+    return { r: r / 255, g: g / 255, b: b / 255 };
 }
 
 
