@@ -102,6 +102,61 @@ function transformY(vertices, value) {
     return vertices;
 }
 
+// To find orientation of ordered triplet (p, q, r).
+// 0 for collinear, 1 for clockwise, 2 for counterclockwise
+function pointOrientation(vertex, p, q, r) {
+    let val = (vertex[q + 1] - vertex[p + 1]) * (vertex[r] - vertex[q]) - 
+              (vertex[q] - vertex[p]) * (vertex[r + 1] - vertex[q + 1])
+    
+    if (val == 0) return 0; // collinear
+    return (val > 0)? 1: 2; // clock or counterclock wise
+}
+
+// Function to do convex-hull
+// References : https://www.geeksforgeeks.org/convex-hull-using-jarvis-algorithm-or-wrapping
+function convexHull (vertices) {
+    // Initiate variables, There must be at least 3 points
+    n = vertices.length / 6
+    if (n < 3) return vertices;
+
+    // Initialize the result
+    let hull = [];
+
+    // Find the leftmost point
+    let leftmostidx = 0;
+    for (let i = 6; i < vertices.length; i += 6) {
+        if (vertices[i] < vertices[leftmostidx]) {
+            leftmostidx = i;
+        }
+    }
+
+    let q; let p = leftmostidx
+    do {
+        // Add current point to result
+        for (let i = 0; i < 6; i += 1) {
+            hull.push(vertices[p + i])
+        }
+        
+        // Search for a point 'q' such that orientation(p, q,
+        // x) is counterclockwise for all points 'x'.
+        q = ((p / 6 + 1) % n) * 6
+        
+        for (let i = 0; i < vertices.length; i += 6) {
+            // If i is more counterclockwise than current q, then update q
+            if (pointOrientation(vertices, p, i, q) == 2) {
+                q = i
+            }
+        }
+
+        // Now q is the most counterclockwise with respect to p
+        // Set p as q for next iteration, so that q is added to result 'hull'
+        p = q
+
+    } while (p != leftmostidx); // While we don't come to first point
+         
+    return hull
+}
+
 function hexToRGB(color) {
     const parseComponent = (str) => parseInt(str, 16);
     
