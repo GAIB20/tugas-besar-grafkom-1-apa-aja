@@ -120,33 +120,32 @@ class Shape {
         arrVertices = coordinateToPixel(arrVertices);
         let arrLength = arrVertices.length;
         const containerCanvas = document.querySelector(".ini-container-canvas");
-        const headerHeight = 0;
         const leftPanelWidth = document.querySelector(".left-panel").offsetWidth;
 
         for (let i = 0; i < arrLength; i += 6) {
             const vertex = arrVertices.slice(i, i + 6);
-            const vertexElement = this.createVertexElement(arrVertices, vertex, i / 6, containerCanvas, headerHeight, leftPanelWidth);
+            const vertexElement = this.createVertexElement(arrVertices, vertex, i / 6, containerCanvas, leftPanelWidth);
             containerCanvas.appendChild(vertexElement);
         }
         
     }
 
     // create each vertex element
-    createVertexElement(arrVertices, vertex, index, containerCanvas, headerHeight, leftPanelWidth) {
+    createVertexElement(arrVertices, vertex, index, containerCanvas, leftPanelWidth) {
         const vertexElement = document.createElement("div");
         vertexElement.setAttribute("id", `vertex-${index / 6}`);
         vertexElement.classList.add("vertex");
         vertexElement.style.cssText = `
             position: absolute;
-            top: ${vertex[1] + headerHeight - 4}px;
+            top: ${vertex[1] - 4}px;
             left: ${vertex[0] + leftPanelWidth - 4}px;
         `;
-        this.addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, headerHeight, leftPanelWidth);
+        this.addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, leftPanelWidth);
         return vertexElement;
     }
 
     // vertex can be dragged for the drawing, clicked for change color of each vertex, and double clicked for delete each vertex
-    addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, headerHeight, leftPanelWidth){
+    addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, leftPanelWidth){
 
         let i = index * 6;
 
@@ -155,7 +154,7 @@ class Shape {
             const coordinate = getMouseCoordinate(canvas,event);
 
             if (coordinate.x > 0 && coordinate.y > 0){
-                this.arrVertices[i] = translateXPixel(coordinate.x);
+                this.arrVertices[i] = translateXPixel(coordinate.x - leftPanelWidth);
                 this.arrVertices[i+1] = translateYPixel(coordinate.y);
                 this.transformDrawShape();
             }
@@ -166,7 +165,7 @@ class Shape {
 
             const coordinate = getMouseCoordinate(canvas,event);
 
-            this.arrVertices[i] = translateXPixel(coordinate.x);
+            this.arrVertices[i] = translateXPixel(coordinate.x - leftPanelWidth);
             this.arrVertices[i+1] = translateYPixel(coordinate.y);
             this.transformDrawShape();
 
@@ -205,7 +204,7 @@ class Shape {
             colorOption.value = document.getElementById("color-option").value;
             colorOption.style.cssText = `
                 position: absolute;
-                top: ${arrVertices[i+1]  + headerHeight - 20}px;
+                top: ${arrVertices[i+1] - 20}px;
                 left: ${arrVertices[i]  + leftPanelWidth + 20}px;
             `
 
