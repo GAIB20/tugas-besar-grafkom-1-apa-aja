@@ -220,7 +220,8 @@ class Shape {
                         this.arrVertices[parallelY + 1] += deltaY;
                     } 
                     else if (this.shape == "square"){
-
+                        this.arrVertices[parallelX] += deltaX;
+                        this.arrVertices[parallelY  + 1] -= deltaX;
                     }
                 }
                 
@@ -237,10 +238,8 @@ class Shape {
                 // remain the shape of square/rectangle
                 if (this.shape == "rectangle" || this.shape == "square") {
 
-                    this.arrVertices[parallelX + 1] += deltaY;
-                    this.arrVertices[parallelY] += deltaX;
-                    this.arrVertices[nonParallel] += deltaX;
-                    this.arrVertices[nonParallel + 1] += deltaY
+                    this.arrVertices[parallelX] += deltaX;
+                    this.arrVertices[parallelY + 1] += deltaY;
 
 
                 }
