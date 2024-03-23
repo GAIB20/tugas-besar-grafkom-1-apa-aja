@@ -85,16 +85,20 @@ function scale(vertices, factor) {
 
 // Doing shape rotation
 function rotate(vertices, angle) {
+    const canvasWidth = document.getElementById("ini-canvas").offsetWidth;
+    const canvasHeight = document.getElementById("ini-canvas").offsetHeight;
+    const canvasScalingFactor = canvasWidth/canvasHeight;
     center = getCenter(vertices);
     angle = angle * Math.PI / 180;
+
 
     for (let i = 0; i < vertices.length; i += 6) {
         x = vertices[i] - center[0];
         y = vertices[i + 1] - center[1];
 
         // Doing rotation using polar concepts
-        vertices[i] = x*Math.cos(angle) - y*Math.sin(angle) + center[0];
-        vertices[i + 1] = x*Math.sin(angle) + y*Math.cos(angle) + center[1];
+        vertices[i] = x*Math.cos(angle) - y*Math.sin(angle)/canvasScalingFactor + center[0];
+        vertices[i + 1] = x*Math.sin(angle)*canvasScalingFactor + y*Math.cos(angle) + center[1];
     }
 
     return vertices;
