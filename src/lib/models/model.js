@@ -176,6 +176,9 @@ class Shape {
     addVertexEventListeners(arrVertices, vertexElement, index, containerCanvas, leftPanelWidth){
         let i = index * 6;
 
+        const canvasWidth = document.getElementById("ini-canvas").offsetWidth;
+        const canvasHeight = document.getElementById("ini-canvas").offsetHeight;
+
         // Event listener untuk memulai drag ketika titik vertex diklik
         vertexElement.addEventListener("mousedown", () => {
             
@@ -185,7 +188,7 @@ class Shape {
         vertexElement.addEventListener("drag", (event) => {
             const coordinate = getMouseCoordinate(canvas,event);
 
-            if (coordinate.x > 0 && coordinate.y > 0){
+            if (coordinate.x > leftPanelWidth && coordinate.y > 0 && coordinate.y < canvasHeight && coordinate.x < (canvasWidth + leftPanelWidth)){
                 this.arrVertices[i] = translateXPixel(coordinate.x - leftPanelWidth);
                 this.arrVertices[i+1] = translateYPixel(coordinate.y);
                 this.transformDrawShape();
@@ -194,10 +197,11 @@ class Shape {
 
         vertexElement.addEventListener("dragend", (event) => {
             const coordinate = getMouseCoordinate(canvas,event);
-
-            this.arrVertices[i] = translateXPixel(coordinate.x - leftPanelWidth);
-            this.arrVertices[i+1] = translateYPixel(coordinate.y);
-            this.transformDrawShape();
+            if (coordinate.x > leftPanelWidth && coordinate.y > 0 && coordinate.y < canvasHeight && coordinate.x < (canvasWidth + leftPanelWidth)){
+                this.arrVertices[i] = translateXPixel(coordinate.x - leftPanelWidth);
+                this.arrVertices[i+1] = translateYPixel(coordinate.y);
+                this.transformDrawShape();
+            }
         }, false);
 
         vertexElement.addEventListener("dblclick", () => {
