@@ -181,6 +181,7 @@ class Shape {
 
         let initialVertexX, initialVertexY, parallelX, parallelY, nonParallel
         let deltaX, deltaY; 
+        let squareVertex = false;
 
         // Event listener untuk memulai drag ketika titik vertex diklik
         vertexElement.addEventListener("mousedown", () => {
@@ -201,6 +202,11 @@ class Shape {
                     }
                 }
             }
+
+            if ((this.arrVertices[index * 6 + 1] < this.arrVertices[parallelX + 1] && this.arrVertices[index * 6] > this.arrVertices[parallelY])
+                || (this.arrVertices[index * 6 + 1] > this.arrVertices[parallelX + 1] && this.arrVertices[index * 6] < this.arrVertices[parallelY])){
+                squareVertex = true;
+            } 
         });
 
         vertexElement.addEventListener("drag", (event) => {
@@ -226,47 +232,21 @@ class Shape {
                         this.arrVertices[i+1] = translateYPixel(pixel.y);
                     } 
                     else if (this.shape == "square"){
-                        this.arrVertices[parallelY] -= deltaX;
-                        this.arrVertices[parallelY + 1] -= deltaX;
-                        this.arrVertices[parallelX + 1] += deltaX;
-                        this.arrVertices[parallelX] += deltaX;
-                        this.arrVertices[nonParallel] -= deltaX;
-                        this.arrVertices[nonParallel + 1] += deltaX;
-                        this.arrVertices[i] += deltaX;
-                        this.arrVertices[i+1] -= deltaX;
+                        if (squareVertex){
+                            this.arrVertices[parallelY + 1] -= deltaX * 1.55;
+                            this.arrVertices[parallelX] += deltaX;
+                            this.arrVertices[i] += deltaX;
+                            this.arrVertices[i+1] -= deltaX * 1.55;
+                        } 
+                        else {
+                            this.arrVertices[parallelY + 1] += deltaX * 1.55;
+                            this.arrVertices[parallelX] += deltaX;
+                            this.arrVertices[i] += deltaX;
+                            this.arrVertices[i+1] += deltaX * 1.55;
+                        }
                     }
                 }
                 
-                this.transformDrawShape();
-            }
-        }, false);
-
-        vertexElement.addEventListener("dragend", (event) => {
-            const pixel = getMousePixel(canvas,event);
-            if (pixel.x > leftPanelWidth && pixel.y > 0 && pixel.y < canvasHeight && pixel.x < (canvasWidth + leftPanelWidth)){
-
-                // remain the shape of square/rectangle
-                if (this.shape == "rectangle" || this.shape == "square") {
-
-                    if (this.shape == "rectangle"){
-                        this.arrVertices[parallelX] += deltaX;
-                        this.arrVertices[parallelY + 1] += deltaY;
-                        this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
-                        this.arrVertices[i+1] = translateYPixel(pixel.y);
-                    } 
-                    else if (this.shape == "square"){
-                        this.arrVertices[parallelY] -= deltaX;
-                        this.arrVertices[parallelY + 1] -= deltaX;
-                        this.arrVertices[parallelX + 1] += deltaX;
-                        this.arrVertices[parallelX] += deltaX;
-                        this.arrVertices[nonParallel] -= deltaX;
-                        this.arrVertices[nonParallel + 1] += deltaX;
-                        this.arrVertices[i] += deltaX;
-                        this.arrVertices[i+1] += deltaX;
-                    }
-
-
-                }
                 this.transformDrawShape();
             }
         }, false);
