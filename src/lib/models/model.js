@@ -179,13 +179,26 @@ class Shape {
         const canvasWidth = document.getElementById("ini-canvas").offsetWidth;
         const canvasHeight = document.getElementById("ini-canvas").offsetHeight;
 
-        let initialVertexX, initialVertexY;
+        let initialVertexX, initialVertexY, parallelX, parallelY, nonParallel
         let deltaX, deltaY; 
 
         // Event listener untuk memulai drag ketika titik vertex diklik
-        vertexElement.addEventListener("mousedown", (event) => {
+        vertexElement.addEventListener("mousedown", () => {
             
             vertexElement.setAttribute("draggable", "true");
+
+            if (this.shape == "rectangle" || this.shape == "square"){
+                for (let i = 0; i < arrVertices.length; i += 6) {
+                    if (i != index * 6){
+                        if (this.arrVertices[i] == this.arrVertices[index*6]){
+                            parallelY = i;
+                        } 
+                        else if (this.arrVertices[i+1] == this.arrVertices[index*6 + 1]){
+                            parallelX = i;
+                        }
+                    }
+                }
+            }
         });
 
         vertexElement.addEventListener("drag", (event) => {
@@ -198,16 +211,17 @@ class Shape {
 
                     initialVertexX = this.arrVertices[i];
                     initialVertexY = this.arrVertices[i+1];
+
                     deltaX = translateXPixel(pixel.x - leftPanelWidth) - initialVertexX;
                     deltaY = translateYPixel(pixel.y) - initialVertexY;
 
-                    console.log(this.arrVertices[i], deltaX);
-
-                    for (let i = 0; i < arrVertices.length; i += 6) {
-                        this.arrVertices[i] += deltaX;
-                        this.arrVertices[i + 1] += deltaY;
+                    if (this.shape == "rectangle"){
+                        this.arrVertices[parallelY] += deltaX;
+                        this.arrVertices[parallelX + 1] += deltaY;
+                    } 
+                    else if (this.shape == "square"){
+                        
                     }
-
                 }
                 
                 this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
@@ -223,10 +237,11 @@ class Shape {
                 // remain the shape of square/rectangle
                 if (this.shape == "rectangle" || this.shape == "square") {
 
-                    for (let i = 0; i < arrVertices.length; i += 6) {
-                        this.arrVertices[i] += deltaX;
-                        this.arrVertices[i + 1] += deltaY;
-                    }
+                    this.arrVertices[parallelX + 1] += deltaY;
+                    this.arrVertices[parallelY] += deltaX;
+                    this.arrVertices[nonParallel] += deltaX;
+                    this.arrVertices[nonParallel + 1] += deltaY
+
 
                 }
                 

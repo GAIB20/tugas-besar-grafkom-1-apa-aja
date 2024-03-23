@@ -5,8 +5,6 @@ const CANVAS_HEIGHT = canvas.getAttribute("height");
 // Translate x pixel to coordinate between [-1, 1]
 function translateXPixel(x) {
     let half = CANVAS_WIDTH / 2;
-    console.log("pixel:", x);
-    console.log("coor:",(x - half) / half );
     return (x - half) / half;
 }
 
