@@ -183,6 +183,8 @@ class Shape {
         let deltaX, deltaY; 
         let squareVertex = false;
 
+        const canvasScalingFactor = canvasWidth/canvasHeight;
+
         // Event listener untuk memulai drag ketika titik vertex diklik
         vertexElement.addEventListener("mousedown", () => {
             
@@ -223,8 +225,6 @@ class Shape {
                     deltaX = translateXPixel(pixel.x - leftPanelWidth) - initialVertexX;
                     deltaY = translateYPixel(pixel.y) - initialVertexY;
 
-                    let deltaLength = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY;
-
                     if (this.shape == "rectangle"){
                         this.arrVertices[parallelX] += deltaX;
                         this.arrVertices[parallelY + 1] += deltaY;
@@ -233,16 +233,16 @@ class Shape {
                     } 
                     else if (this.shape == "square"){
                         if (squareVertex){
-                            this.arrVertices[parallelY + 1] -= deltaX * 1.55;
+                            this.arrVertices[parallelY + 1] -= deltaX * canvasScalingFactor;
                             this.arrVertices[parallelX] += deltaX;
                             this.arrVertices[i] += deltaX;
-                            this.arrVertices[i+1] -= deltaX * 1.55;
+                            this.arrVertices[i+1] -= deltaX * canvasScalingFactor;
                         } 
                         else {
-                            this.arrVertices[parallelY + 1] += deltaX * 1.55;
+                            this.arrVertices[parallelY + 1] += deltaX * canvasScalingFactor;
                             this.arrVertices[parallelX] += deltaX;
                             this.arrVertices[i] += deltaX;
-                            this.arrVertices[i+1] += deltaX * 1.55;
+                            this.arrVertices[i+1] += deltaX * canvasScalingFactor;
                         }
                     }
                 }
