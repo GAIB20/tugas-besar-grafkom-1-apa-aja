@@ -16,7 +16,7 @@ class Square extends Shape {
             isDown= true;
     
             if (!this.isDrawn) {
-                initCoor = getMouseCoordinate(canvas, event);
+                initCoor = getMousePixel(canvas, event);
             }
 
         }, false);
@@ -24,7 +24,7 @@ class Square extends Shape {
         canvas.addEventListener("mousemove", (event) => {
 
             if (!this.isDrawn && isDown) {
-                const coordinate = getMouseCoordinate(canvas, event);
+                const coordinate = getMousePixel(canvas, event);
                 this.createSquare(initCoor, coordinate, false);
             }
 
@@ -34,7 +34,7 @@ class Square extends Shape {
             isDown= false;
 
             if (!this.isDrawn) {
-                const coordinate = getMouseCoordinate(canvas, event);
+                const coordinate = getMousePixel(canvas, event);
                 this.createSquare(initCoor, coordinate, true);
                 this.isDrawn = true;
             }

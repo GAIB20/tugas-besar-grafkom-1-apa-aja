@@ -17,7 +17,7 @@ class Line extends Shape {
             isDown= true;
     
             if (!this.isDrawn) {
-                initCoor = getMouseCoordinate(canvas, event);
+                initCoor = getMousePixel(canvas, event);
             }
 
         }, false);
@@ -25,7 +25,7 @@ class Line extends Shape {
         canvas.addEventListener("mousemove", (event) => {
 
             if (!this.isDrawn && isDown) {
-                const coordinate = getMouseCoordinate(canvas, event);
+                const coordinate = getMousePixel(canvas, event);
                 this.createLine(initCoor, coordinate, false);
             }
 
@@ -35,7 +35,7 @@ class Line extends Shape {
             isDown= false;
 
             if (!this.isDrawn) {
-                const coordinate = getMouseCoordinate(canvas, event);
+                const coordinate = getMousePixel(canvas, event);
                 this.createLine(initCoor, coordinate, true);
                 this.isDrawn = true;
             }

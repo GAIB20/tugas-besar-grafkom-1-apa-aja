@@ -16,7 +16,7 @@ class Rectangle extends Shape {
             isDown= true;
     
             if (!this.isDrawn) {
-                initCoor = getMouseCoordinate(canvas, event);
+                initCoor = getMousePixel(canvas, event);
             }
 
         }, false);
@@ -24,7 +24,7 @@ class Rectangle extends Shape {
         canvas.addEventListener("mousemove", (event) => {
 
             if (!this.isDrawn && isDown) {
-                const coordinate = getMouseCoordinate(canvas, event);
+                const coordinate = getMousePixel(canvas, event);
                 this.createRectangle(initCoor, coordinate, false);
             }
 
@@ -34,7 +34,7 @@ class Rectangle extends Shape {
             isDown= false;
 
             if (!this.isDrawn) {
-                const coordinate = getMouseCoordinate(canvas, event);
+                const coordinate = getMousePixel(canvas, event);
                 this.createRectangle(initCoor, coordinate, true);
                 this.isDrawn = true;
             }

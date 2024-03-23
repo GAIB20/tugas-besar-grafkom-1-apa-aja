@@ -179,27 +179,59 @@ class Shape {
         const canvasWidth = document.getElementById("ini-canvas").offsetWidth;
         const canvasHeight = document.getElementById("ini-canvas").offsetHeight;
 
+        let initialVertexX, initialVertexY;
+        let deltaX, deltaY; 
+
         // Event listener untuk memulai drag ketika titik vertex diklik
-        vertexElement.addEventListener("mousedown", () => {
+        vertexElement.addEventListener("mousedown", (event) => {
             
             vertexElement.setAttribute("draggable", "true");
         });
 
         vertexElement.addEventListener("drag", (event) => {
-            const coordinate = getMouseCoordinate(canvas,event);
+            const pixel = getMousePixel(canvas,event);
 
-            if (coordinate.x > leftPanelWidth && coordinate.y > 0 && coordinate.y < canvasHeight && coordinate.x < (canvasWidth + leftPanelWidth)){
-                this.arrVertices[i] = translateXPixel(coordinate.x - leftPanelWidth);
-                this.arrVertices[i+1] = translateYPixel(coordinate.y);
+            if (pixel.x > leftPanelWidth && pixel.y > 0 && pixel.y < canvasHeight && pixel.x < (canvasWidth + leftPanelWidth)){
+
+                // remain the shape of square/rectangle
+                if (this.shape == "rectangle" || this.shape == "square") {
+
+                    initialVertexX = this.arrVertices[i];
+                    initialVertexY = this.arrVertices[i+1];
+                    deltaX = translateXPixel(pixel.x - leftPanelWidth) - initialVertexX;
+                    deltaY = translateYPixel(pixel.y) - initialVertexY;
+
+                    console.log(this.arrVertices[i], deltaX);
+
+                    for (let i = 0; i < arrVertices.length; i += 6) {
+                        this.arrVertices[i] += deltaX;
+                        this.arrVertices[i + 1] += deltaY;
+                    }
+
+                }
+                
+                this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
+                this.arrVertices[i+1] = translateYPixel(pixel.y);
                 this.transformDrawShape();
             }
         }, false);
 
         vertexElement.addEventListener("dragend", (event) => {
-            const coordinate = getMouseCoordinate(canvas,event);
-            if (coordinate.x > leftPanelWidth && coordinate.y > 0 && coordinate.y < canvasHeight && coordinate.x < (canvasWidth + leftPanelWidth)){
-                this.arrVertices[i] = translateXPixel(coordinate.x - leftPanelWidth);
-                this.arrVertices[i+1] = translateYPixel(coordinate.y);
+            const pixel = getMousePixel(canvas,event);
+            if (pixel.x > leftPanelWidth && pixel.y > 0 && pixel.y < canvasHeight && pixel.x < (canvasWidth + leftPanelWidth)){
+
+                // remain the shape of square/rectangle
+                if (this.shape == "rectangle" || this.shape == "square") {
+
+                    for (let i = 0; i < arrVertices.length; i += 6) {
+                        this.arrVertices[i] += deltaX;
+                        this.arrVertices[i + 1] += deltaY;
+                    }
+
+                }
+                
+                this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
+                this.arrVertices[i+1] = translateYPixel(pixel.y);
                 this.transformDrawShape();
             }
         }, false);

@@ -13,7 +13,7 @@ class Polygon extends Shape {
         canvas.addEventListener("click", (event) => {
             
             // Get the coordinate based on mouse position
-            let pos = getMouseCoordinate(canvas, event);
+            let pos = getMousePixel(canvas, event);
             let x = translateXPixel(pos.x);
             let y = translateYPixel(pos.y);
 

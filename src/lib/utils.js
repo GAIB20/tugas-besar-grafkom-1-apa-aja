@@ -6,7 +6,7 @@ document.getElementById('file-button').addEventListener('click', function() {
 });
 
 // Get the current mouse coordinates
-function getMouseCoordinate(canvas, event) {
+function getMousePixel(canvas, event) {
     const rect = canvas.getBoundingClientRect();
     return {
         x: event.clientX - rect.left,
