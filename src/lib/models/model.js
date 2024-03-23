@@ -191,10 +191,10 @@ class Shape {
                 for (let i = 0; i < arrVertices.length; i += 6) {
                     if (i != index * 6){
                         if (this.arrVertices[i] == this.arrVertices[index*6]){
-                            parallelY = i;
+                            parallelX = i;
                         } 
                         else if (this.arrVertices[i+1] == this.arrVertices[index*6 + 1]){
-                            parallelX = i;
+                            parallelY = i;
                         }
                     }
                 }
@@ -216,11 +216,11 @@ class Shape {
                     deltaY = translateYPixel(pixel.y) - initialVertexY;
 
                     if (this.shape == "rectangle"){
-                        this.arrVertices[parallelY] += deltaX;
-                        this.arrVertices[parallelX + 1] += deltaY;
+                        this.arrVertices[parallelX] += deltaX;
+                        this.arrVertices[parallelY + 1] += deltaY;
                     } 
                     else if (this.shape == "square"){
-                        
+
                     }
                 }
                 
