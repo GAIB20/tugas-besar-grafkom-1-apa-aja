@@ -195,6 +195,8 @@ class Shape {
                         } 
                         else if (this.arrVertices[i+1] == this.arrVertices[index*6 + 1]){
                             parallelY = i;
+                        } else {
+                            nonParallel = i;
                         }
                     }
                 }
@@ -215,18 +217,26 @@ class Shape {
                     deltaX = translateXPixel(pixel.x - leftPanelWidth) - initialVertexX;
                     deltaY = translateYPixel(pixel.y) - initialVertexY;
 
+                    let deltaLength = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY;
+
                     if (this.shape == "rectangle"){
                         this.arrVertices[parallelX] += deltaX;
                         this.arrVertices[parallelY + 1] += deltaY;
+                        this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
+                        this.arrVertices[i+1] = translateYPixel(pixel.y);
                     } 
                     else if (this.shape == "square"){
+                        this.arrVertices[parallelY] -= deltaX;
+                        this.arrVertices[parallelY + 1] -= deltaX;
+                        this.arrVertices[parallelX + 1] += deltaX;
                         this.arrVertices[parallelX] += deltaX;
-                        this.arrVertices[parallelY  + 1] -= deltaX;
+                        this.arrVertices[nonParallel] -= deltaX;
+                        this.arrVertices[nonParallel + 1] += deltaX;
+                        this.arrVertices[i] += deltaX;
+                        this.arrVertices[i+1] -= deltaX;
                     }
                 }
                 
-                this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
-                this.arrVertices[i+1] = translateYPixel(pixel.y);
                 this.transformDrawShape();
             }
         }, false);
@@ -238,14 +248,25 @@ class Shape {
                 // remain the shape of square/rectangle
                 if (this.shape == "rectangle" || this.shape == "square") {
 
-                    this.arrVertices[parallelX] += deltaX;
-                    this.arrVertices[parallelY + 1] += deltaY;
+                    if (this.shape == "rectangle"){
+                        this.arrVertices[parallelX] += deltaX;
+                        this.arrVertices[parallelY + 1] += deltaY;
+                        this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
+                        this.arrVertices[i+1] = translateYPixel(pixel.y);
+                    } 
+                    else if (this.shape == "square"){
+                        this.arrVertices[parallelY] -= deltaX;
+                        this.arrVertices[parallelY + 1] -= deltaX;
+                        this.arrVertices[parallelX + 1] += deltaX;
+                        this.arrVertices[parallelX] += deltaX;
+                        this.arrVertices[nonParallel] -= deltaX;
+                        this.arrVertices[nonParallel + 1] += deltaX;
+                        this.arrVertices[i] += deltaX;
+                        this.arrVertices[i+1] += deltaX;
+                    }
 
 
                 }
-                
-                this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
-                this.arrVertices[i+1] = translateYPixel(pixel.y);
                 this.transformDrawShape();
             }
         }, false);
