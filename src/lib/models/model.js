@@ -178,6 +178,7 @@ class Shape {
 
         const canvasWidth = document.getElementById("ini-canvas").offsetWidth;
         const canvasHeight = document.getElementById("ini-canvas").offsetHeight;
+        const checkbox = document.getElementById("checkbox-lock");
 
         let initialVertexX, initialVertexY, parallelX, parallelY, nonParallel
         let deltaX, deltaY; 
@@ -216,39 +217,47 @@ class Shape {
 
             if (pixel.x > leftPanelWidth && pixel.y > 0 && pixel.y < canvasHeight && pixel.x < (canvasWidth + leftPanelWidth)){
 
-                // remain the shape of square/rectangle
-                if (this.shape == "rectangle" || this.shape == "square") {
+                initialVertexX = this.arrVertices[i];
+                initialVertexY = this.arrVertices[i+1];
 
-                    initialVertexX = this.arrVertices[i];
-                    initialVertexY = this.arrVertices[i+1];
+                deltaX = translateXPixel(pixel.x - leftPanelWidth) - initialVertexX;
+                deltaY = translateYPixel(pixel.y) - initialVertexY;
 
-                    deltaX = translateXPixel(pixel.x - leftPanelWidth) - initialVertexX;
-                    deltaY = translateYPixel(pixel.y) - initialVertexY;
-
-                    if (this.shape == "rectangle"){
-                        this.arrVertices[parallelX] += deltaX;
-                        this.arrVertices[parallelY + 1] += deltaY;
-                        this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
-                        this.arrVertices[i+1] = translateYPixel(pixel.y);
+                if (checkbox.checked) {
+                    for (let i = 0; i < this.arrVertices.length; i+=6) {
+                        this.arrVertices[i] += deltaX;
+                        this.arrVertices[i+1] += deltaY;
                     } 
-                    else if (this.shape == "square"){
-                        if (squareVertex){
-                            this.arrVertices[parallelY + 1] -= deltaX * canvasScalingFactor;
+                } 
+                else {
+                    // remain the shape of square/rectangle
+                    if (this.shape == "rectangle" || this.shape == "square") {
+
+                        if (this.shape == "rectangle"){
                             this.arrVertices[parallelX] += deltaX;
-                            this.arrVertices[i] += deltaX;
-                            this.arrVertices[i+1] -= deltaX * canvasScalingFactor;
+                            this.arrVertices[parallelY + 1] += deltaY;
+                            this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
+                            this.arrVertices[i+1] = translateYPixel(pixel.y);
                         } 
-                        else {
-                            this.arrVertices[parallelY + 1] += deltaX * canvasScalingFactor;
-                            this.arrVertices[parallelX] += deltaX;
-                            this.arrVertices[i] += deltaX;
-                            this.arrVertices[i+1] += deltaX * canvasScalingFactor;
+                        else if (this.shape == "square"){
+                            if (squareVertex){
+                                this.arrVertices[parallelY + 1] -= deltaX * canvasScalingFactor;
+                                this.arrVertices[parallelX] += deltaX;
+                                this.arrVertices[i] += deltaX;
+                                this.arrVertices[i+1] -= deltaX * canvasScalingFactor;
+                            } 
+                            else {
+                                this.arrVertices[parallelY + 1] += deltaX * canvasScalingFactor;
+                                this.arrVertices[parallelX] += deltaX;
+                                this.arrVertices[i] += deltaX;
+                                this.arrVertices[i+1] += deltaX * canvasScalingFactor;
+                            }
                         }
                     }
-                }
-                else {
-                    this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
-                    this.arrVertices[i+1] = translateYPixel(pixel.y);
+                    else {
+                        this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
+                        this.arrVertices[i+1] = translateYPixel(pixel.y);
+                    }
                 }
                 
                 this.transformDrawShape();
