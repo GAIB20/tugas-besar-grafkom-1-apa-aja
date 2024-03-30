@@ -246,8 +246,13 @@ class Shape {
                         }
                     }
                 }
+                else {
+                    this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
+                    this.arrVertices[i+1] = translateYPixel(pixel.y);
+                }
                 
                 this.transformDrawShape();
+                
             }
         }, false);
 
