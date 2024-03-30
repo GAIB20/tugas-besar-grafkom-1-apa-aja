@@ -78,8 +78,6 @@ class Square extends Shape {
             initCoor.x, yCoor , r, g, b, 1.0,
         ]
 
-        console.log(coor.x, coor.y)
-
         this.arrVertices = pixelToCoordinate(this.arrVertices);
         this.transformDrawShape(isDone);
     }

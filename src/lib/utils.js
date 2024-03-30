@@ -65,10 +65,8 @@ function changeCanvas(id) {
 // Create range value listeners from slider values
 function addRangeListener(id, shape) {
     const range = document.getElementById(id);
-    console.log(range.value);
 
     range.addEventListener("input", () => {
-        console.log(shape[id]);
         shape[id] = parseFloat(range.value);
         shape.transformDrawShape();
     }, false);

@@ -138,8 +138,8 @@ function transformY(vertices, value) {
 // To find orientation of ordered triplet (p, q, r).
 // 0 for collinear, 1 for clockwise, 2 for counterclockwise
 function pointOrientation(vertex, p, q, r) {
-    let val = (vertex[q + 1] - vertex[p + 1]) * (vertex[r] - vertex[q]) - 
-              (vertex[q] - vertex[p]) * (vertex[r + 1] - vertex[q + 1])
+    let val = ((vertex[q + 1] - vertex[p + 1]) * (vertex[r] - vertex[q])) - 
+              ((vertex[q] - vertex[p]) * (vertex[r + 1] - vertex[q + 1]))
     
     if (val == 0) return 0; // collinear
     return (val > 0)? 1 : 2; // clock or counterclock wise
@@ -157,7 +157,7 @@ function convexHull (vertices) {
 
     // Find the leftmost point
     let leftmostidx = 0;
-    for (let i = 6; i < vertices.length; i += 6) {
+    for (let i = 0; i < vertices.length; i += 6) {
         if (vertices[i] < vertices[leftmostidx]) {
             leftmostidx = i;
         }
@@ -172,7 +172,7 @@ function convexHull (vertices) {
         
         // Search for a point 'q' such that orientation(p, q,
         // x) is counterclockwise for all points 'x'.
-        q = ((p / 6 + 1) % n) * 6
+        q = ((p / 6 + 1) % n) * 6;
         
         for (let i = 0; i < vertices.length; i += 6) {
             // If i is more counterclockwise than current q, then update q
