@@ -220,4 +220,8 @@ function resetParams() {
     document.getElementById("scale").value = 1;
     document.getElementById("transformX").value = 1;
     document.getElementById("transformY").value = 1;
+
+    // reset checkboxes
+    document.getElementById("checkbox-lock").checked = false;
+    document.getElementById("checkbox-animate").checked = false;
 }

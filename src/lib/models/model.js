@@ -22,6 +22,7 @@ class Shape {
         this.transformY = parseInt(document.getElementById("transformY").value),
 
         this.transformDrawShape();
+        
     }
 
     // Initiate all the listeners
@@ -33,6 +34,7 @@ class Shape {
         this.addClearButtonListener();
         this.addParamsListener();
         this.addSaveListener();
+        this.addRotationListener();
     }
 
     // Reset the canvas
@@ -72,6 +74,18 @@ class Shape {
         }, false);
     }
 
+    addRotationListener() {
+        const animate = document.getElementById("checkbox-animate");
+        animate.addEventListener("change", () => {
+            if (animate.checked) {
+                this.startAnimationLoop();
+            } else {
+                this.stopAnimationLoop();
+                this.transformDrawShape();
+            }
+        });
+      }
+
     // Change all the color elements
     changeColor() {
         let arrLength = arrVertices.length;
@@ -87,6 +101,7 @@ class Shape {
     addClearButtonListener() {
         const clearButton = document.getElementById("button-clear");
         clearButton.addEventListener("click", () => {
+            this.stopAnimationLoop();
             this.resetVerticesListener();
             this.reset();
         })
@@ -94,12 +109,37 @@ class Shape {
 
     // Listener for parameter adjusted by user
     addParamsListener() {
+
+        const x = document.getElementById("x");
+        const y = document.getElementById("y");
+        const angle = document.getElementById("angle");
+        const scale = document.getElementById("scale");
+        const transformX = document.getElementById("transformX");
+        const transformY = document.getElementById("transformY");
+
+        const params = [x, y, angle, scale, transformX, transformY];
+
+        const animateCheckbox = document.getElementById("checkbox-animate");
+
+        // disable params if in animation
+        const toggleParams = () => {
+            params.forEach(param => {
+                param.disabled = animateCheckbox.checked;
+            });
+        };
+
+        animateCheckbox.addEventListener("change", toggleParams);
+
+        toggleParams();
+
         addRangeListener("x", this);
         addRangeListener("y", this);
         addRangeListener("angle", this);
         addRangeListener("scale", this);
         addRangeListener("transformX", this);
         addRangeListener("transformY", this);
+    
+        
     }
 
     // Listener for save button
@@ -112,10 +152,28 @@ class Shape {
         });
     }
 
+    // start animation
+    startAnimationLoop() {
+        this.animationFrameId = requestAnimationFrame(this.startAnimationLoop.bind(this));
+        this.transformDrawShape(true,true);
+    }
+
+    // stop animation
+    stopAnimationLoop() {
+        cancelAnimationFrame(this.animationFrameId);
+    }
+
     // Draw the shape functionalities
     // Main function for transform and draw shape
-    transformDrawShape(isDone = true) {
+    transformDrawShape(isDone = true, isAnimated = false) {
         let arrVertices = this.arrVertices.slice();
+
+        // animation rotation
+        if (isAnimated) {
+            const angle = this.getRotationAngle();
+            arrVertices = rotate(arrVertices, angle);
+        }
+
         arrVertices = this.transformShape(arrVertices);
         this.drawShape(arrVertices);
 
@@ -131,8 +189,17 @@ class Shape {
         this.gl.drawArrays(this.type, 0, arrLength / 6);
     }
 
+    // rotation animation angle
+    getRotationAngle() {
+        const time = Date.now();
+        const rotationSpeed = 0.1;
+        const angle = time * rotationSpeed;
+        return angle;
+      }
+
     // Transform the shape
     transformShape(arrVertices) {
+
         arrVertices = translation(arrVertices, this.x, this.y);
         arrVertices = scale(arrVertices, this.scale);    
         arrVertices = rotate(arrVertices, this.angle);

@@ -10,16 +10,19 @@ class Polygon extends Shape {
 
         // Get the canvas
         const canvas = document.querySelector("#ini-canvas");
+        const animateCheckbox = document.getElementById("checkbox-animate");
         canvas.addEventListener("click", (event) => {
             
-            // Get the coordinate based on mouse position
-            let pos = getMousePixel(canvas, event);
-            let x = translateXPixel(pos.x);
-            let y = translateYPixel(pos.y);
+            if (!animateCheckbox.checked){
+                // Get the coordinate based on mouse position
+                let pos = getMousePixel(canvas, event);
+                let x = translateXPixel(pos.x);
+                let y = translateYPixel(pos.y);
 
-            // Add vertex and draw object
-            this.addVertex(x, y);
-            this.transformDrawShape();
+                // Add vertex and draw object
+                this.addVertex(x, y);
+                this.transformDrawShape();
+            }
         }, false);
     }
 
@@ -32,7 +35,8 @@ class Polygon extends Shape {
 
     // Just draw the outer point using convex hull
     transformDrawShape() {
+        const animateCheckbox = document.getElementById("checkbox-animate");
         this.arrVertices = convexHull(this.arrVertices);
-        super.transformDrawShape();
+        super.transformDrawShape(true, animateCheckbox.checked);
     }
 }

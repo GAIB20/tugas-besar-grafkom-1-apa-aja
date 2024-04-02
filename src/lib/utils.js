@@ -28,7 +28,8 @@ function addButtonListener(id, shape) {
 
 // Handle shape changing mechanism
 function changeShape(id, shape) {
-    shape.reset();
+    const clearButton = document.getElementById("button-clear");
+    clearButton.click();
         
     switch (id) {
         case "button-line":
