@@ -70,7 +70,8 @@ class Shape {
         const colorButton = document.getElementById("color-option");
         colorButton.addEventListener("input", (event) => {
             this.colors = hexToRGB(event.target.value);
-            this.changeColor();
+            this.changeColor(this.arrVertices);
+            this.transformDrawShape(true, false, true);
         }, false);
     }
 
@@ -87,14 +88,15 @@ class Shape {
       }
 
     // Change all the color elements
-    changeColor() {
+    changeColor(arrVertices) {
         let arrLength = arrVertices.length;
         for (let i = 0; i < arrLength; i+=6){
-            this.arrVertices[i + 2] = this.colors.r;
-            this.arrVertices[i + 3] = this.colors.g;
-            this.arrVertices[i + 4] = this.colors.b;
-            this.arrVertices[i + 5] = 1;
+            arrVertices[i + 2] = this.colors.r;
+            arrVertices[i + 3] = this.colors.g;
+            arrVertices[i + 4] = this.colors.b;
+            arrVertices[i + 5] = 1;
         }
+        return arrVertices;
     }
 
     // Clear button listener
@@ -139,7 +141,6 @@ class Shape {
         addRangeListener("transformX", this);
         addRangeListener("transformY", this);
     
-        
     }
 
     // Listener for save button
@@ -165,7 +166,7 @@ class Shape {
 
     // Draw the shape functionalities
     // Main function for transform and draw shape
-    transformDrawShape(isDone = true, isAnimated = false) {
+    transformDrawShape(isDone = true, isAnimated = false, isColor = false) {
         let arrVertices = this.arrVertices.slice();
 
         // animation rotation
@@ -174,7 +175,7 @@ class Shape {
             arrVertices = rotate(arrVertices, angle);
         }
 
-        arrVertices = this.transformShape(arrVertices);
+        arrVertices = this.transformShape(arrVertices, isColor);
         this.drawShape(arrVertices);
 
         if(isDone) {
@@ -198,13 +199,16 @@ class Shape {
       }
 
     // Transform the shape
-    transformShape(arrVertices) {
+    transformShape(arrVertices, isColor = false) {
 
         arrVertices = translation(arrVertices, this.x, this.y);
         arrVertices = scale(arrVertices, this.scale);    
         arrVertices = rotate(arrVertices, this.angle);
         arrVertices = transformX(arrVertices, this.transformX);
         arrVertices = transformY(arrVertices, this.transformY);
+        if (isColor){
+            this.changeColor(arrVertices);
+        }
 
         return arrVertices;
     }
