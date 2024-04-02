@@ -223,10 +223,16 @@ class Shape {
                 deltaX = translateXPixel(pixel.x - leftPanelWidth) - initialVertexX;
                 deltaY = translateYPixel(pixel.y) - initialVertexY;
 
+                // add sparkle effect
+                const sparkle = document.createElement("div");
+                sparkle.classList.add("sparkle");
+
                 if (checkbox.checked) {
                     for (let i = 0; i < this.arrVertices.length; i+=6) {
                         this.arrVertices[i] += deltaX;
                         this.arrVertices[i+1] += deltaY;
+                        sparkle.style.top = `${pixel.y}px`;
+                        sparkle.style.left = `${pixel.x}px`;
                     } 
                 } 
                 else {
@@ -238,6 +244,8 @@ class Shape {
                             this.arrVertices[parallelY + 1] += deltaY;
                             this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
                             this.arrVertices[i+1] = translateYPixel(pixel.y);
+                            sparkle.style.top = `${pixel.y}px`;
+                            sparkle.style.left = `${pixel.x}px`;
                         } 
                         else if (this.shape == "square"){
                             if (squareVertex){
@@ -252,15 +260,26 @@ class Shape {
                                 this.arrVertices[i] += deltaX;
                                 this.arrVertices[i+1] += deltaX * canvasScalingFactor;
                             }
+                            sparkle.style.top = `${translateYCoordinate(this.arrVertices[i+1])}px`;
+                            sparkle.style.left = `${pixel.x}px`;
                         }
                     }
                     else {
                         this.arrVertices[i] = translateXPixel(pixel.x - leftPanelWidth);
                         this.arrVertices[i+1] = translateYPixel(pixel.y);
+                        sparkle.style.top = `${pixel.y}px`;
+                        sparkle.style.left = `${pixel.x}px`;
                     }
                 }
                 
                 this.transformDrawShape();
+
+                document.body.appendChild(sparkle);
+
+                // remove the sparkle element after dragging end
+                sparkle.addEventListener("animationend", () => {
+                    sparkle.remove();
+                });
                 
             }
         }, false);
