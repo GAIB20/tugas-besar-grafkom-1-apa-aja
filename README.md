@@ -6,10 +6,11 @@ Aplikasi yang dibangun berhasil untuk menerapkan WebGL murni dalam pengembangan 
 
 ## ❓ Apa yang Pengguna dapat Lakukan?
 <div align="center">
-  <img height="200px" src="./assets/asset1.png" alt=""/>
+  <img height="250px" src="./assets/asset1.png" alt=""/>
 </div>
 <br>
-Interaksi pengguna dengan kanvas dimungkinkan melalui penggunaan berbagai peralatan yang disediakan di sisi kiri kanvas. Pengguna diberikan kebebasan untuk memilih jenis objek yang ingin mereka ciptakan, dengan opsi yang tersedia dalam bentuk tombol-tombol tertentu (misalnya tombol untuk garis, persegi, persegi panjang, dan poligon). Selain itu, fitur tambahan seperti rotasi, translasi, penskalaan, pemilihan, warna, dan penghapusan vertex membantu pengguna mengedit kreasi mereka dengan lebih lanjut. Untuk informasi lebih detil mengenai fitur-fitur ini, pengguna dapat membaca lebih lanjut pada [dokumen berikut](./docs/)
+
+Interaksi pengguna dengan kanvas dimungkinkan melalui penggunaan berbagai peralatan yang disediakan di sisi kiri kanvas. Pengguna diberikan kebebasan untuk memilih jenis objek yang ingin mereka ciptakan, dengan opsi yang tersedia dalam bentuk tombol-tombol tertentu (misalnya tombol untuk garis, persegi, persegi panjang, dan poligon). Selain itu, fitur tambahan seperti rotasi, translasi, penskalaan, pemilihan, warna, dan penghapusan vertex membantu pengguna mengedit kreasi mereka dengan lebih lanjut. Untuk informasi lebih detil mengenai fitur-fitur ini, pengguna dapat membaca lebih lanjut pada [dokumen berikut](https://github.com/GAIB20/tugas-besar-grafkom-1-apa-aja/tree/main/doc/IF3260_Tugas1_K02_G02.pdf)
 
 Di samping itu, kanvas dilengkapi dengan tombol untuk membersihkan area kerja serta tombol untuk mengekspor dan mengimpor file. Fungsi *load model* memungkinkan pengguna menyimpan objek-objek dari kanvas ke dalam file berformat `.json`. Adapun fungsi impor, yang didukung oleh tombol pilihan file, memungkinkan pengguna untuk memilih dan memuat file tertentu ke dalam kanvas. Proses impor dimulai dengan pembersihan kanvas untuk menghilangkan objek-objek sebelumnya, memastikan bahwa hanya model baru yang diimpor yang akan ditampilkan.
 
