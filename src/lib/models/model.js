@@ -5,6 +5,7 @@ class Shape {
         this.type = type;
         this.shape = "";
         this.reset();
+        this.prevParams = {};
     }
 
     // Reset all the values
@@ -20,6 +21,8 @@ class Shape {
         this.angle = parseInt(document.getElementById("angle").value),
         this.transformX = parseInt(document.getElementById("transformX").value),
         this.transformY = parseInt(document.getElementById("transformY").value),
+
+        this.savePrevParams();
 
         this.transformDrawShape();
         
@@ -143,6 +146,18 @@ class Shape {
     
     }
 
+    // Save current params as previeous params
+    savePrevParams() {
+        this.prevParams = {
+            x: this.x,
+            y: this.y,
+            scale: this.scale,
+            angle: this.angle,
+            transformX: this.transformX,
+            transformY: this.transformY
+        };
+    }
+
     // Listener for save button
     addSaveListener() {
         cloneAndReplace("button-save");
@@ -166,16 +181,19 @@ class Shape {
 
     // Draw the shape functionalities
     // Main function for transform and draw shape
-    transformDrawShape(isDone = true, isAnimated = false, isColor = false) {
+    transformDrawShape(isDone = true, isAnimated = false, isColor = false, isTransform = true) {
+
         let arrVertices = this.arrVertices.slice();
+
+        if (isTransform){
+            arrVertices = this.transformShape(arrVertices, isColor);
+        }
 
         // animation rotation
         if (isAnimated) {
             const angle = this.getRotationAngle();
             arrVertices = rotate(arrVertices, angle);
         }
-
-        arrVertices = this.transformShape(arrVertices, isColor);
         this.drawShape(arrVertices);
 
         if(isDone) {
@@ -201,14 +219,48 @@ class Shape {
     // Transform the shape
     transformShape(arrVertices, isColor = false) {
 
-        arrVertices = translation(arrVertices, this.x, this.y);
-        arrVertices = scale(arrVertices, this.scale);    
-        arrVertices = rotate(arrVertices, this.angle);
-        arrVertices = transformX(arrVertices, this.transformX);
-        arrVertices = transformY(arrVertices, this.transformY);
+        if (this.scale == 1){
+            arrVertices = scale(arrVertices, this.scale);  
+        } else {
+            arrVertices = scale(arrVertices, this.scale / this.prevParams.scale);    
+        }
+
+        if (this.rotate == 0){
+            arrVertices = rotate(arrVertices, this.angle);
+        } else {
+            arrVertices = rotate(arrVertices, this.angle - this.prevParams.angle);
+        }
+
+        if (this.transformX == 1){
+            arrVertices = transformX(arrVertices, this.transformX);
+        } else {
+            arrVertices = transformX(arrVertices, this.transformX/ this.prevParams.transformX);
+        }
+
+        if (this.transformY == 1){
+            arrVertices = transformY(arrVertices, this.transformY);
+        } else {
+            arrVertices = transformY(arrVertices, this.transformY / this.prevParams.transformY);
+        }
+
+        if (this.x == 535 && this.y == 345){
+            arrVertices = translation(arrVertices, this.x, this.y);
+        }  else {
+            arrVertices = translation(arrVertices, this.x - this.prevParams.x + 535, this.y - this.prevParams.y + 345);
+        }
+
         if (isColor){
             this.changeColor(arrVertices);
         }
+
+        if (arrVertices != null){
+            for (let i = 0; i < this.arrVertices.length; i+=6) {
+                this.arrVertices[i] = arrVertices[i];
+                this.arrVertices[i+1] = arrVertices[i+1];
+            }
+        }
+
+        this.savePrevParams();
 
         return arrVertices;
     }
@@ -257,7 +309,7 @@ class Shape {
 
         const canvasScalingFactor = canvasWidth/canvasHeight;
 
-        // Event listener untuk memulai drag ketika titik vertex diklik
+        // Event listener for start dragging
         vertexElement.addEventListener("mousedown", () => {
             
             vertexElement.setAttribute("draggable", "true");
@@ -343,7 +395,7 @@ class Shape {
                     }
                 }
                 
-                this.transformDrawShape();
+                this.transformDrawShape(true,false,false,false);
 
                 document.body.appendChild(sparkle);
 
