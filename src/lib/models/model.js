@@ -225,7 +225,7 @@ class Shape {
             arrVertices = scale(arrVertices, this.scale / this.prevParams.scale);    
         }
 
-        if (this.rotate == 0){
+        if (this.angle == 0){
             arrVertices = rotate(arrVertices, this.angle);
         } else {
             arrVertices = rotate(arrVertices, this.angle - this.prevParams.angle);
